@@ -84,27 +84,4 @@ export default function Home(props: Props) {
 }
 
 
-export const getStaticProps: GetStaticProps = async () => {
-  const endpoint = "products"
-  const params = {
-    per_page: 100,
-  }
-  const wooCommerceProducts = await fetchWooCommerceProducts(endpoint, params).catch((error) =>
-    console.error(error)
-  );
-
-
-  if (!wooCommerceProducts) {
-    return {
-      notFound: true,
-    };
-  }
-
-
-  return {
-    props: {
-      products: wooCommerceProducts.data,
-    },
-  };
-};
 

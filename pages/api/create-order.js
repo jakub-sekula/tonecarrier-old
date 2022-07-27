@@ -56,7 +56,7 @@ const handler = async (req, res) => {
 
     res.status(201).json(newOrder.data);
   } catch (error) {
-    throw new Error(error);
+    console.log(error);
   }
 };
 

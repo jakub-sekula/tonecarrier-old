@@ -37,3 +37,12 @@ export const retrieveProductById = async (productId) => {
     throw new Error(error);
   }
 }
+
+export const getCustomerOrders = async (customerId) => {
+  try {
+    const response = await api.get(`orders?customer=${customerId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
