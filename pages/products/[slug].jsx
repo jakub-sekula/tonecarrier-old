@@ -21,17 +21,25 @@ function ProductPage({ product }) {
     ],
   };
 
-  const callAPI = async () => {
+  const createOrder = async () => {
     const order = await fetch("/api/order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then((res) => res.json());
+    });
 
-    const orderNumber = order.meta_data.find(obj => obj.key === '_order_number').value
+    const orderJson = await order.json()
 
+
+    if (order.status !== 201) {
+      console.error(`Could not create order: ${order.status} ${order.statusText}`)
+      return
+    }
+
+    // have to find order number like this because of the sequential numbers plugin
+    const orderNumber = orderJson.meta_data.find(obj => obj.key === '_order_number').value
     console.log(`Order ${orderNumber} created!`);
   };
 
@@ -49,7 +57,7 @@ function ProductPage({ product }) {
       <Link href="/products">
         <a className="underline text-blue-700 hover:text-slate-900">Go back</a>
       </Link>
-      <button onClick={callAPI}>Order</button>
+      <button onClick={createOrder}>Order</button>
     </div>
   );
 }

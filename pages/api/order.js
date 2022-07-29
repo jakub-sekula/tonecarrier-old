@@ -1,10 +1,9 @@
 import Cookies from "cookies";
-import { Router } from "next/router";
 import {
   createWoocommerceOrder,
   retrieveProductById,
 } from "../../utils/wooCommerceApi";
-import { getUserDetails, validateToken } from "../../utils/wordpressApi";
+import { validateToken } from "../../utils/wordpressApi";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -34,8 +33,17 @@ const handler = async (req, res) => {
 
   try {
     //get logged in user token from cookie and validate it
-    const userToken = new Cookies(req, res).get("jwt") || 0;
+    const userToken = new Cookies(req, res).get("jwt") || undefined;
+    if(!userToken) {
+      res.status(401).json("Unauthorised")
+      return
+    }
+
     const validate = await validateToken(userToken);
+    if (validate.data.status !== 200) {
+      res.status(400).json("Bad token")
+      return
+    }
 
     // get line items from client
     const { line_items } = req.body;

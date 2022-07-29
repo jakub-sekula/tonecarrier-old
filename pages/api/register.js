@@ -49,7 +49,7 @@ const handler = async (req, res) => {
     }
 
     // if successful, immediately log in the new user
-    const loginResponse = await fetch("http://woocommerce.local/wp-json/jwt-auth/v1/token", {
+    const loginResponse = await fetch(`${process.env.WOOCOMMERCE_API_URL}/wp-json/jwt-auth/v1/token`, {
       method: "POST",
       headers: new Headers({ "content-type": "application/json" }),
       body: JSON.stringify({

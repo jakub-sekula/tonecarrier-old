@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 
+// not used at the moment
 export const getUserDetails = async (username, token) => {
   try {
     const response = await fetch(

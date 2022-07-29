@@ -4,37 +4,33 @@ import { getCustomerOrders } from "../../utils/wooCommerceApi";
 import { validateToken } from "../../utils/wordpressApi";
 
 const handler = async (req, res) => {
-  const token = new Cookies(req,res).get("jwt") || undefined;
+  const token = new Cookies(req, res).get("jwt") || undefined;
 
+  // return if there is no token cookie
   if (!token) {
-    res.status(401).json("No token found");
-    return
+    res.status(401).json("User not logged in - no token found");
+    return;
   }
 
-  const validate = await validateToken(token)
-  if (validate.data.status !== 200){
-      res.status(403).json(validate)
-      return
+  // if token exists, check if it's valid
+  const validate = await validateToken(token);
+
+  if (validate.data.status !== 200) {
+    res.status(403).json(validate);
+    return;
   }
 
-  const options = {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+  // if token is valid, get user ID from validation response
+  const { id } = validate;
 
-  const { id: userID, slug: username } = await fetch(
-    "http://woocommerce.local/wp-json/wp/v2/users/me",
-    options
-  ).then((res) => res.json());
-  const userOrders = await getCustomerOrders(userID);
+  const userOrders = await getCustomerOrders(id);
+
   const response = {
-    userId: userID,
-    username: username,
+    userId: id,
     orders: userOrders,
   };
-  res.send(response);
+
+  res.status(200).json(response);
 };
 
 export default handler;

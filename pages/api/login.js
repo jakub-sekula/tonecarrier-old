@@ -23,7 +23,7 @@ const handler = async (req, res) => {
 
   try {
     const data = await fetch(
-      `http://woocommerce.local/wp-json/jwt-auth/v1/token`,
+      `${process.env.WOOCOMMERCE_API_URL}/wp-json/jwt-auth/v1/token`,
       options
     );
     const authResponse = await data.json();
