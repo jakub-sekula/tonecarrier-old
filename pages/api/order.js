@@ -1,7 +1,10 @@
+import Cookies from "cookies";
+import { Router } from "next/router";
 import {
   createWoocommerceOrder,
   retrieveProductById,
 } from "../../utils/wooCommerceApi";
+import { getUserDetails, validateToken } from "../../utils/wordpressApi";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -29,17 +32,22 @@ const handler = async (req, res) => {
     return;
   }
 
-  const { line_items } = req.body;
-
-  console.log(line_items);
-
   try {
+    //get logged in user token from cookie and validate it
+    const userToken = new Cookies(req, res).get("jwt") || 0;
+    const validate = await validateToken(userToken);
+
+    // get line items from client
+    const { line_items } = req.body;
+
+    // create a Stripe payment intent and pass the calculated total price
     const paymentIntent = await stripe.paymentIntents.create({
       amount: await calculateTotalAmount(line_items),
       currency: "gbp",
     });
 
     const orderData = {
+      customer_id: validate.id,
       payment_method: "stripe",
       payment_method_title: "Card",
       set_paid: false,
@@ -57,6 +65,7 @@ const handler = async (req, res) => {
     res.status(201).json(newOrder.data);
   } catch (error) {
     console.log(error);
+    res.status(502).json("Bad gateway");
   }
 };
 

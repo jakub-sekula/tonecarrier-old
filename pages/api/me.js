@@ -2,11 +2,15 @@ import Cookies from "cookies";
 
 
 const handler = async (req,res) => {
-    const cookies = new Cookies(req,res);
-    const token = cookies.get('jwt')
+    const token = new Cookies(req,res).get('jwt') || undefined;
+
+    if (!token) {
+        res.status(403).json("User not logged in")
+        return
+    }
 
     const options = {
-        Method: 'GET',
+        method: 'GET',
         headers: {
             Authorization: `Bearer ${token}`
         }

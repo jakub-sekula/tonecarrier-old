@@ -22,14 +22,17 @@ function ProductPage({ product }) {
   };
 
   const callAPI = async () => {
-    const kek = await fetch("/api/create-order", {
+    const order = await fetch("/api/order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     }).then((res) => res.json());
-    console.log(`Order ${kek.id} created!`);
+
+    const orderNumber = order.meta_data.find(obj => obj.key === '_order_number').value
+
+    console.log(`Order ${orderNumber} created!`);
   };
 
   return (

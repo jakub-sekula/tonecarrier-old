@@ -43,6 +43,8 @@ export const getCustomerOrders = async (customerId) => {
     const response = await api.get(`orders?customer=${customerId}`);
     return response.data;
   } catch (error) {
-    throw new Error(error);
+    console.log(error)
+    return {error: error}
   }
 }
+
