@@ -99,6 +99,7 @@ export const getStaticProps = async ({ params }) => {
 
   return {
     props: {
+      title: data.data[0].name,
       product: data.data[0],
     },
   };
