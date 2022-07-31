@@ -37,7 +37,7 @@ const App = () => {
       setFirstName("");
       setLastName("");
       setCurrentUser(json.username);
-      console.log(res.status)
+      console.log(res)
     } catch (error) {
       console.error(error);
     }

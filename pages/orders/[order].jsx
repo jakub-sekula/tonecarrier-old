@@ -1,13 +1,22 @@
 import { useRouter } from "next/router";
-import { retrieveProductById } from "../../utils/wooCommerceApi";
+import { retrieveOrderById } from "../../utils/wooCommerceApi";
 
-const OrderPage = ({ price }) => {
+const OrderPage = ({orders}) => {
   const router = useRouter();
-  const { order } = router.query;
+  const { order: id} = router.query;
+
+  // console.log(orders)
+  // console.log(router.query)
+
+  // const sequentialId = orders.meta_data.find(key => key['key']==='_order_number').value
 
   return (
     <div>
-      product number {order} with a price of £{price}
+      <h1>Information about order number {id}:</h1>
+      {/* <h1>Sequential ID: {sequentialId}</h1> */}
+      <pre className="text-xs break-words">
+        JSON dump: {JSON.stringify(orders, null, "\t")}
+      </pre>
     </div>
   );
 };
@@ -17,12 +26,11 @@ export default OrderPage;
 export const getServerSideProps = async (context) => {
   const { order } = context.query;
 
-  console.log(context.query)
-
-  const product = await retrieveProductById(order);
-  const { price } = product || "hello";
+  const orderData = await retrieveOrderById(order);
 
   return {
-    props: { price: price },
+    props: {
+      orders: orderData,
+    },
   };
 };

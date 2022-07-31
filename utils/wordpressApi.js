@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+const cookie = require("cookie");
 
 // not used at the moment
 export const getUserDetails = async (username, token) => {
@@ -13,7 +14,7 @@ export const getUserDetails = async (username, token) => {
   }
 };
 
-export const validateToken = async (token) => {
+export const validateToken = async (token, context = undefined) => {
   try {
     // call token validation endpoint
     const validate = await fetch(
@@ -27,7 +28,20 @@ export const validateToken = async (token) => {
     ).then((res) => res.json());
 
     // return validation response if unsuccessful
-    if (validate.data.status !== 200) {
+    if (validate.statusCode !== 200) {
+      // if user account has been deleted, remove the old token
+      if (validate.code === "jwt_auth_user_not_found") {
+        console.log(
+          "The user associated with the provided JWT does not exist. Clearing cookie..."
+        );
+      }
+      console.log(
+        "Invalid auth token. Clearing cookie..."
+      );
+      context.res.setHeader(
+        "Set-Cookie",
+        cookie.serialize("jwt", "", { maxAge: 0 })
+      );
       return validate;
     }
 

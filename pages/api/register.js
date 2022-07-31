@@ -1,7 +1,6 @@
 import Cookies from "cookies";
 import fetch, { Headers } from "node-fetch";
 
-const ADMIN_JWT = process.env.ADMIN_JWT;
 
 const handler = async (req, res) => {
   const cookies = new Cookies(req, res);
@@ -18,7 +17,7 @@ const handler = async (req, res) => {
     method: "POST",
     headers: new Headers({
       "content-type": "application/json",
-      authorization: `Bearer ${ADMIN_JWT}`,
+      authorization: `Basic ${process.env.ADMIN_BASIC_AUTH_HEADER_KEY}`,
     }),
     body: JSON.stringify({
       email: email,
@@ -39,14 +38,20 @@ const handler = async (req, res) => {
     const registerResponse = await data.json();
 
     if (registerResponse?.code === "existing_user_login") {
-      res.status(400).json({ message: registerResponse.code });
-      return;
+      console.log(registerResponse.code, JSON.parse(options.body))
+      return res.status(400).json({ message: registerResponse.code });
     }
 
     if (registerResponse?.code === "rest_invalid_param") {
-      res.status(400).json({ message: registerResponse.code });
-      return;
+      console.log(registerResponse.code, JSON.parse(options.body))
+      return res.status(400).json({ message: registerResponse.code });
     }
+
+    if (data.status !== 201) {
+      console.log(data.statusText)
+      return res.status(data.status).json(data.statusText)
+    }
+
 
     // if successful, immediately log in the new user
     const loginResponse = await fetch(`${process.env.WOOCOMMERCE_API_URL}/wp-json/jwt-auth/v1/token`, {
@@ -59,8 +64,8 @@ const handler = async (req, res) => {
     }).then((res) => res.json());
 
     // login route returns an access token for the user, set it as a cookie
-    const { token } = loginResponse;
-    cookies.set("jwt", token, {maxAge: 1000*60*60*24});
+    const { token } = loginResponse.data;
+    cookies.set("jwt", token, {maxAge: 1000*60*60*24}); //expire cookie after 24 hours
 
     // send a response to the client
     res.status(201).json({

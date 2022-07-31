@@ -38,6 +38,15 @@ export const retrieveProductById = async (productId) => {
   }
 }
 
+export const retrieveOrderById = async (orderId) => {
+  try {
+    const response = await api.get(`orders/${orderId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
 export const getCustomerOrders = async (customerId) => {
   try {
     const response = await api.get(`orders?customer=${customerId}`);

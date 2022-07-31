@@ -40,7 +40,7 @@ const handler = async (req, res) => {
     }
 
     const validate = await validateToken(userToken);
-    if (validate.data.status !== 200) {
+    if (validate.statusCode !== 200) {
       res.status(400).json("Bad token")
       return
     }
