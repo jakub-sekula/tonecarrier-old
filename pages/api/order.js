@@ -5,6 +5,8 @@ import {
 } from "../../utils/wooCommerceApi";
 import { validateToken } from "../../utils/wordpressApi";
 
+const cookie = require("cookie");
+
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const calculateTotalAmount = async (lineItems) => {
@@ -33,16 +35,29 @@ const handler = async (req, res) => {
 
   try {
     //get logged in user token from cookie and validate it
-    const userToken = new Cookies(req, res).get("jwt") || undefined;
-    if(!userToken) {
-      res.status(401).json("Unauthorised")
-      return
+
+    const token = cookie.parse(req.headers.cookie)["jwt"];
+
+    if (!token) {
+      res.status(401).json("Unauthorised");
+      return;
     }
 
-    const validate = await validateToken(userToken);
+    // call the validation endpoint
+    const validate = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/validate`,
+      { headers: new Headers({ Cookie: req.headers.cookie }) }
+    ).then((res) => res.json());
+
+    const kek = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/validate`,
+      { headers: new Headers({ Cookie: req.headers.cookie }) }
+    ).then((res) => res.json()).then(json => console.log(json))
+
+
     if (validate.statusCode !== 200) {
-      res.status(400).json("Bad token")
-      return
+      res.status(400).json("Bad token");
+      return;
     }
 
     // get line items from client
@@ -55,7 +70,7 @@ const handler = async (req, res) => {
     });
 
     const orderData = {
-      customer_id: validate.id,
+      customer_id: validate.data.id,
       payment_method: "stripe",
       payment_method_title: "Card",
       set_paid: false,

@@ -16,7 +16,7 @@ const App = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let res = await fetch("/api/register", {
+      let res = await fetch("api/auth/register", {
         method: "POST",
         headers: new Headers({ "content-type": "application/json" }),
         body: JSON.stringify({

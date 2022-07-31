@@ -1,10 +1,14 @@
-import Cookies from "cookies";
-
+const cookie = require('cookie')
 
 const handler = async (req,res) => {
-    const cookies = new Cookies(req,res)
 
-    cookies.set('jwt', '', {maxAge: -1})
+    res.setHeader(
+        "Set-Cookie",
+        cookie.serialize("jwt", "", {
+          maxAge: -1,
+          path: "/",
+        })
+      );
     res.status(200).json('Logged out')
 }
 

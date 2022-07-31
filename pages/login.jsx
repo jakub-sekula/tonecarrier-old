@@ -8,7 +8,7 @@ const App = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let res = await fetch("/api/login", {
+      let res = await fetch("/api/auth/login", {
         method: "POST",
         headers: new Headers({'content-type': 'application/json'}),
         body: JSON.stringify({

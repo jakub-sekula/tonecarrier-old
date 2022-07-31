@@ -1,12 +1,12 @@
 import fetch from "node-fetch";
 const cookie = require("cookie");
 
-// not used at the moment
-export const getUserDetails = async (username, token) => {
+
+export const getUserDetails = async (id, token) => {
   try {
     const response = await fetch(
-      `${process.env.WOOCOMMERCE_API_URL}/wp-json/wp/v2/users?slug=${username}`,
-      { headers: { Authorization: `Bearer ${token}` } }
+      `${process.env.WOOCOMMERCE_API_URL}/wp-json/wp/v2/users/${id}`,
+      { headers: { Authorization: `Basic ${process.env.ADMIN_BASIC_AUTH_HEADER_KEY}` } }
     ).then((res) => res.json());
     return response;
   } catch (error) {
