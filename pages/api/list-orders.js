@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { getCustomerOrders } from "../../utils/wooCommerceApi";
+import { validateToken } from "../../utils/wordpressApi";
 // import { validateToken } from "../../utils/wordpressApi";
 
 const handler = async (req, res) => {
@@ -20,11 +21,7 @@ const handler = async (req, res) => {
   }
 
   // if token exists, check if it's valid
-  const validate = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/validate`, {
-    headers: new Headers({ Cookie: req.headers.cookie }),
-  }).then(res => res.json());
-
-  console.log(validate)
+  const validate = await validateToken(cookie.parse(req.headers.cookie)['jwt'])
 
   if (validate.statusCode !== 200) {
     res.status(403).json({errorMessage: 'Token validation failed', originalData: validate});

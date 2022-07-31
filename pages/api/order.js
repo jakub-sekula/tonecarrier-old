@@ -1,4 +1,3 @@
-import Cookies from "cookies";
 import {
   createWoocommerceOrder,
   retrieveProductById,
@@ -44,15 +43,7 @@ const handler = async (req, res) => {
     }
 
     // call the validation endpoint
-    const validate = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/validate`,
-      { headers: new Headers({ Cookie: req.headers.cookie }) }
-    ).then((res) => res.json());
-
-    const kek = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/validate`,
-      { headers: new Headers({ Cookie: req.headers.cookie }) }
-    ).then((res) => res.json()).then(json => console.log(json))
+    const validate = await validateToken(cookie.parse(req.headers.cookie)['jwt'])
 
 
     if (validate.statusCode !== 200) {

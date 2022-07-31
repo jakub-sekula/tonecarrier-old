@@ -1,10 +1,7 @@
-import Cookies from "cookies";
 import fetch, { Headers } from "node-fetch";
-
+const cookie = require('cookie')
 
 const handler = async (req, res) => {
-  const cookies = new Cookies(req, res);
-
   const { email, password, first_name, last_name } = req.body;
 
   if (!email || !password) {
@@ -65,7 +62,12 @@ const handler = async (req, res) => {
 
     // login route returns an access token for the user, set it as a cookie
     const { token } = loginResponse.data;
-    cookies.set("jwt", token, {maxAge: 1000*60*60*24}); //expire cookie after 24 hours
+    res.setHeader('Set-Cookie', cookie.serialize('jwt', token, {
+      maxAge: 1000 * 60,
+      path: "/",
+      httpOnly: true,
+      sameSite: 'strict'
+    }))
 
     // send a response to the client
     res.status(201).json({

@@ -1,15 +1,13 @@
 import { fetchWooCommerceProducts } from "../../utils/wooCommerceApi";
 import Image from "next/image";
-import { useRouter } from 'next/router'
-
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 function ProductPage({ product }) {
-
   const router = useRouter();
 
   if (router.isFallback) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
   const data = {
@@ -30,27 +28,30 @@ function ProductPage({ product }) {
       body: JSON.stringify(data),
     });
 
-    const orderJson = await order.json()
-
+    const orderJson = await order.json();
 
     if (order.status !== 201) {
-      console.error(`Could not create order: ${order.status} ${order.statusText}`)
-      return
+      console.error(
+        `Could not create order: ${order.status} ${order.statusText}`
+      );
+      return;
     }
 
     // have to find order number like this because of the sequential numbers plugin
-    const orderNumber = orderJson.meta_data.find(obj => obj.key === '_order_number').value
+    const orderNumber = orderJson.meta_data.find(
+      (obj) => obj.key === "_order_number"
+    ).value;
     console.log(`Order ${orderNumber} created!`);
   };
 
   return (
     <div className="w-64 flex flex-col mx-auto">
-        <Image
-          src={product.images[0].src}
-          alt={product.images[0].alt}
-          width={200}
-          height={200}
-        />
+      <Image
+        src={product.images[0].src}
+        alt={product.images[0].alt}
+        width={200}
+        height={200}
+      />
       <h1 className="font-['Cooper_Black'] text-2xl">{product.name}</h1>
       <p>£{product.price}</p>
       <div dangerouslySetInnerHTML={{ __html: product.description }} />

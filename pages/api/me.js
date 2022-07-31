@@ -1,8 +1,12 @@
-import Cookies from "cookies";
+// import Cookies from "cookies";
+const cookie = require('cookie')
 
 
 const handler = async (req,res) => {
-    const token = new Cookies(req,res).get('jwt') || undefined;
+
+    const token = req.headers.cookie
+    ? cookie.parse(req.headers.cookie)["jwt"]
+    : "";
 
     if (!token) {
         res.status(403).json("User not logged in")
