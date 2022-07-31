@@ -15,7 +15,6 @@ const AllProducts = ({ products }) => {
 
   return (
     <div>
-        <h1>All products</h1>
         <ul>{productList}</ul>
     </div>
   )
@@ -37,6 +36,7 @@ export const getStaticProps = async () => {
 
   return {
     props: {
+      title: 'All products',
       products: products.data,
     },
     revalidate: 1
