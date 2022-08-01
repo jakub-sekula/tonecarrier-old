@@ -4,9 +4,7 @@ import { validateToken } from "../../../utils/wordpressApi";
 const handler = async (req, res) => {
   const token = req.headers.cookie
     ? cookie.parse(req.headers.cookie)["jwt"]
-    : "";
-
-    
+    : null
 
   try {
     // call token validation endpoint

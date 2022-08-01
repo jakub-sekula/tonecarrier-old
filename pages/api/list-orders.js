@@ -12,7 +12,9 @@ const handler = async (req, res) => {
     return
   }
 
-  const token = undefined || cookie.parse(req.headers.cookie)['jwt']
+  const token = req.headers.cookie
+  ? cookie.parse(req.headers.cookie)["jwt"]
+  : null
 
   // return if there is no token cookie
   if (!token) {

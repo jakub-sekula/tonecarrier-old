@@ -35,7 +35,9 @@ const handler = async (req, res) => {
   try {
     //get logged in user token from cookie and validate it
 
-    const token = cookie.parse(req.headers.cookie)["jwt"];
+    const token = req.headers.cookie
+    ? cookie.parse(req.headers.cookie)["jwt"]
+    : null
 
     if (!token) {
       res.status(401).json("Unauthorised");

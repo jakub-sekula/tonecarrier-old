@@ -2,9 +2,11 @@ import { fetchWooCommerceProducts } from "../../utils/wooCommerceApi";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { useAuth } from "../../components/contexts/AuthContext";
 
-function ProductPage({ product }) {
+function ProductPage({ product}) {
   const router = useRouter();
+  const auth = useAuth()
 
   if (router.isFallback) {
     return <div>Loading...</div>;

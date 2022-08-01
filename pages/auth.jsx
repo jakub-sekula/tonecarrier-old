@@ -1,18 +1,8 @@
-import { getUser } from "../components/contexts/AuthContext";
-const cookie = require("cookie");
+import { useAuth } from "../components/contexts/AuthContext";
 
 const App = (props) => {
-  return <pre>{JSON.stringify(props, null, "\t")}</pre>;
+  const { auth } = useAuth();
+  return <pre>{JSON.stringify(auth, null, "\t")}</pre>;
 };
 
 export default App;
-
-export const getServerSideProps = async (context) => {
-  const user = await getUser(context);
-
-  return {
-    props: {
-      user: user,
-    },
-  };
-};

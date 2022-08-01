@@ -9,7 +9,6 @@ const api = new WooCommerceRestApi({
   version: "wc/v3",
 });
 
-
 // fetch all products from WooCommerce //
 export const fetchWooCommerceProducts = async (endpoint, params) => {
   try {
@@ -18,7 +17,7 @@ export const fetchWooCommerceProducts = async (endpoint, params) => {
   } catch (error) {
     throw new Error(error);
   }
-}
+};
 
 export const createWoocommerceOrder = async (data) => {
   try {
@@ -27,7 +26,7 @@ export const createWoocommerceOrder = async (data) => {
   } catch (error) {
     throw new Error(error);
   }
-}
+};
 
 export const retrieveProductById = async (productId) => {
   try {
@@ -36,7 +35,7 @@ export const retrieveProductById = async (productId) => {
   } catch (error) {
     throw new Error(error);
   }
-}
+};
 
 export const retrieveOrderById = async (orderId) => {
   try {
@@ -45,15 +44,17 @@ export const retrieveOrderById = async (orderId) => {
   } catch (error) {
     throw new Error(error);
   }
-}
+};
 
 export const getCustomerOrders = async (customerId) => {
   try {
     const response = await api.get(`orders?customer=${customerId}`);
     return response.data;
   } catch (error) {
-    console.log(error)
-    return {error: error}
+    return {
+      message:
+        "Error within getCustomerOrders function within woocCommerceApi.js: ",
+      error: error,
+    };
   }
-}
-
+};

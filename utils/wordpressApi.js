@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 const cookie = require("cookie");
 
-export const getUserDetails = async (id, token) => {
+export const getUserDetails = async (id) => {
   try {
     const response = await fetch(
       `${process.env.WOOCOMMERCE_API_URL}/wp-json/wp/v2/users/${id}`,

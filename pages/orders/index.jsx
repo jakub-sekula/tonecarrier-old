@@ -18,36 +18,45 @@ const OrderPage = ({ orders }) => {
 export default OrderPage;
 
 export const getServerSideProps = async (context) => {
-  const cookie = require("cookie");
+  try {
+    const cookie = require("cookie");
 
-  // get request cookie, if it's empty set it to empty string
-  const reqCookie = context.req.headers.cookie || "";
+    // get request cookie, if it's empty set it to null
+    const token = context.req.headers.cookie
+    ? cookie.parse(context.req.headers.cookie)["jwt"]
+    : null;
 
-  const token = cookie.parse(reqCookie)["jwt"] //returns undefined if no JWT present
+    // if token exists, check if it's valid
+    const validate = await validateToken(token);
 
-  // if token exists, check if it's valid
-  const validate = await validateToken(token, context);
-  if (!validate.success) {
+    if (!validate.success) {
+      return {
+        props: {
+          orders: {
+            userId: null,
+            orders: null,
+            message: "Authorisation failed. Please log in again.",
+          },
+        },
+      };
+    }
+
+    // if token is valid, get user ID from validation response
+    const { id } = validate.data;
+
+    const userOrders = await getCustomerOrders(id);
+
+    const response = {
+      userId: id,
+      orders: userOrders,
+    };
+
     return {
       props: {
-        orders: { userId: null, orders: null, message: 'Authorisation failed. Please log in again.' },
+        orders: response,
       },
     };
+  } catch (error) {
+    console.log("zesralo sie, ", error);
   }
-
-  // if token is valid, get user ID from validation response
-  const { id } = validate;
-
-  const userOrders = await getCustomerOrders(id);
-
-  const response = {
-    userId: id,
-    orders: userOrders,
-  };
-
-  return {
-    props: {
-      orders: response,
-    },
-  };
 };

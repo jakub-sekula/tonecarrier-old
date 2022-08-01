@@ -5,11 +5,6 @@ const OrderPage = ({orders}) => {
   const router = useRouter();
   const { order: id} = router.query;
 
-  // console.log(orders)
-  // console.log(router.query)
-
-  // const sequentialId = orders.meta_data.find(key => key['key']==='_order_number').value
-
   return (
     <div>
       <h1>Information about order number {id}:</h1>
