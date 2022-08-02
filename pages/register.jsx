@@ -36,10 +36,10 @@ const App = () => {
   return (
     <div className="flex flex-col items-center  h-full py-20">
       <h1 className="font-cooper text-4xl text-[#EFAF23] glow mb-4">
-        Sign in to your account
+        Register a new account
       </h1>
       <span className="text-yellow-100 mb-16 font-sans">
-        Access your orders or edit your details by signing in below
+        You need an account to view your orders and download files
       </span>
       <form onSubmit={handleSubmit} className="flex flex-col w-96 mb-10">
         <label
