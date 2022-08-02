@@ -40,37 +40,55 @@ const App = () => {
   };
 
   const loggedInMessage = auth.user ? (
-    <h1>Logged in as {user.name}</h1>
+    <span className="text-white">Logged in as {user.name}</span>
   ) : (
-    <h1>Logged out.</h1>
+    <span className="text-white">Logged out.</span>
   );
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="flex flex-col w-48">
+    <div className="flex flex-col items-center  h-full py-20">
+      <h1 className="font-cooper text-4xl text-[#EFAF23] glow mb-4">
+        Sign in to your account
+      </h1>
+      <span className="text-yellow-100 mb-16 font-sans">
+        Access your orders or edit your details by signing in below
+      </span>
+      <form onSubmit={handleSubmit} className="flex flex-col w-96 mb-10">
+        <label
+          className="font-sans text-yellow-500 text-sm font-bold mb-2"
+          htmlFor="username"
+        >
+          Username
+        </label>
         <input
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           type="text"
           name="username"
-          className="border border-black"
+          className="border-2 border-zinc-200 rounded-full px-3 py-2 mb-4"
         />
-        <label htmlFor="username">Username</label>
+        <label
+          className="font-sans text-yellow-500 text-sm font-bold mb-2"
+          htmlFor="password"
+        >
+          Password
+        </label>
         <input
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           type="password"
           name="password"
-          className="border border-black"
+          className="border-2 border-zinc-200 rounded-full px-3 py-2 mb-8"
         />
-        <label htmlFor="password">Password</label>
-        <button type="submit">Submit</button>
+
+        <button className="bg-yellow-500 rounded-full w-max px-20 py-2 self-center" type="submit">Sign in</button>
       </form>
       {loggedInMessage}
-      {user ?
-      <Link href="/orders">
-        <a>Go to orders</a>
-      </Link>:null}
+      {user ? (
+        <Link href="/orders">
+          <a className="text-yellow-100 italic">Go to orders</a>
+        </Link>
+      ) : null}
     </div>
   );
 };

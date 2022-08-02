@@ -7,7 +7,7 @@ const AllProducts = ({ products }) => {
 
     const productLink = `products/${product.slug}`
     return (
-        <li key={[product.id]}>
+        <li className='text-white' key={[product.id]}>
             <Link href={productLink}>{product.name}</Link>
         </li>
         );

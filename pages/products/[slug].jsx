@@ -9,7 +9,7 @@ function ProductPage({ product}) {
   const auth = useAuth()
 
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return <div className='text-white'>Loading...</div>;
   }
 
   const data = {
@@ -47,7 +47,7 @@ function ProductPage({ product}) {
   };
 
   return (
-    <div className="w-64 flex flex-col mx-auto">
+    <div className="w-64 flex flex-col mx-auto text-white">
       <Image
         src={product.images[0].src}
         alt={product.images[0].alt}

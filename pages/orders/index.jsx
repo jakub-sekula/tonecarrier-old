@@ -6,9 +6,9 @@ const OrderPage = ({ orders }) => {
 
   return (
     <div>
-      <h1>Information about orders for customer {id}:</h1>
+      <h1 className='text-white'>Information about orders for customer {id}:</h1>
       {/* <h1>Sequential ID: {sequentialId}</h1> */}
-      <pre className="text-xs break-words">
+      <pre className="text-xs break-words text-white">
         JSON dump: {JSON.stringify(orders, null, "\t")}
       </pre>
     </div>

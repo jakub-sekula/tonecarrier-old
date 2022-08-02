@@ -12,63 +12,90 @@ const App = () => {
 
   // log username to console when successfully registered
   useEffect(() => {
-    console.log('registered ', user);
+    console.log("registered ", user);
   }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-      const res = await register(email, password, firstName, lastName);
-      const json = await res.json();
+    const res = await register(email, password, firstName, lastName);
+    const json = await res.json();
 
-      if (res.status !== 201) {
-        console.log(json);
-        return;
-      }
-      setEmail("");
-      setPassword("");
-      setFirstName("");
-      setLastName("");
-      setCurrentUser(json.username);
+    if (res.status !== 201) {
+      console.log(json);
+      return;
+    }
+    setEmail("");
+    setPassword("");
+    setFirstName("");
+    setLastName("");
+    setCurrentUser(json.username);
   };
 
-  const loggedInMessage = user ? <h1>Successfully registered {user}</h1> : "";
+  const loggedInMessage = user ? <span className="text-white">Successfully registered {user}</span> : "";
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="flex flex-col w-48">
+    <div className="flex flex-col items-center  h-full py-20">
+      <h1 className="font-cooper text-4xl text-[#EFAF23] glow mb-4">
+        Sign in to your account
+      </h1>
+      <span className="text-yellow-100 mb-16 font-sans">
+        Access your orders or edit your details by signing in below
+      </span>
+      <form onSubmit={handleSubmit} className="flex flex-col w-96 mb-10">
+        <label
+          className="font-sans text-yellow-500 text-sm font-bold mb-2"
+          htmlFor="firstName"
+        >
+          First name
+        </label>
         <input
+        className="border-2 border-zinc-200 rounded-full px-3 py-2 mb-4"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
           type="text"
           name="firstName"
-          className="border border-black"
         />
-        <label htmlFor="firstName">First name</label>
+        <label
+          className="font-sans text-yellow-500 text-sm font-bold mb-2"
+          htmlFor="lastName"
+        >
+          Last name
+        </label>
+
         <input
+        className="border-2 border-zinc-200 rounded-full px-3 py-2 mb-4"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           type="text"
           name="lastName"
-          className="border border-black"
         />
-        <label htmlFor="lastName">Last name</label>
+        <label
+          className="font-sans text-yellow-500 text-sm font-bold mb-2"
+          htmlFor="email"
+        >
+          Email
+        </label>
         <input
+        className="border-2 border-zinc-200 rounded-full px-3 py-2 mb-4"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           type="text"
           name="email"
-          className="border border-black"
         />
-        <label htmlFor="email">Email</label>
+        <label
+          className="font-sans text-yellow-500 text-sm font-bold mb-2"
+          htmlFor="password"
+        >
+          Password
+        </label>
         <input
+        className="border-2 border-zinc-200 rounded-full px-3 py-2 mb-8"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           type="password"
           name="password"
-          className="border border-black"
         />
-        <label htmlFor="password">Password</label>
-        <button type="submit">Submit</button>
+        <button className="bg-yellow-500 rounded-full w-max px-20 py-2 self-center" type="submit">Register</button>
       </form>
       {loggedInMessage}
     </div>
