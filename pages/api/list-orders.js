@@ -7,8 +7,7 @@ const handler = async (req, res) => {
   const cookie = require('cookie')
 
   if (!req.headers.cookie) {
-    console.log('zesralo sie - no cookie in header')
-    res.status(400).send()
+    res.status(400).json({message: 'No cookie found', status: 400})
     return
   }
 
@@ -18,7 +17,7 @@ const handler = async (req, res) => {
 
   // return if there is no token cookie
   if (!token) {
-    res.status(401).json("User not logged in - no token found");
+    res.status(401).json({message: "No token found", status: 401});
     return;
   }
 

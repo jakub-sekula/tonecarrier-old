@@ -1,49 +1,36 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAuth } from "../components/contexts/AuthContext";
 import { getUserDetails } from "../utils/wordpressApi";
 
 const App = () => {
   // get login function from auth context
-  const { auth, setAuth, login, user } = useAuth();
-
+  const { auth, login, user, isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
+  if (isAuthenticated && !isLoading) {
+    router.push("account");
+  }
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await login(username, password)
-        .then((res) => res.json())
-        .catch((err) => console.error(err));
+      const res = await login(username, password).catch((err) =>
+        console.error(err)
+      );
 
-      if (res.token) {
-        const userData = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/me`
-        ).then((res) => res.json());
+      if (res.statusCode !== 200) return;
 
-        const { id, name, user } = userData.user;
+      // on successful login go to account page
+      router.push("account");
 
-        setAuth({
-          status: "SIGNED_IN",
-          user: { id: id || null, name: name || null, user: user || null },
-        });
-        setUsername("");
-        setPassword("");
-        setCurrentUser(user);
-      } else {
-        console.log(res);
-      }
     } catch (error) {
       console.error("Error in login.jsx: ", error);
     }
   };
-
-  const loggedInMessage = auth.user ? (
-    <span className="text-white">Logged in as {user.name}</span>
-  ) : (
-    <span className="text-white">Logged out.</span>
-  );
 
   return (
     <div className="flex flex-col items-center  h-full py-20">
@@ -81,14 +68,13 @@ const App = () => {
           className="border-2 border-zinc-200 rounded-full px-3 py-2 mb-8"
         />
 
-        <button className="bg-yellow-500 rounded-full w-max px-20 py-2 self-center" type="submit">Sign in</button>
+        <button
+          className="bg-yellow-500 rounded-full w-max px-20 py-2 self-center"
+          type="submit"
+        >
+          Sign in
+        </button>
       </form>
-      {loggedInMessage}
-      {user ? (
-        <Link href="/orders">
-          <a className="text-yellow-100 italic">Go to orders</a>
-        </Link>
-      ) : null}
     </div>
   );
 };

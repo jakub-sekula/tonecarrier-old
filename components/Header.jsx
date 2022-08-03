@@ -36,7 +36,7 @@ const Header = ({ title }) => {
   };
 
   return (
-    <header className="w-screen  flex flex-col h-min-24 p-4 bg-zinc-700 text-white text-center shrink-0 gap-4 justify-center relative items-center">
+    <header className="flex flex-col h-min-24 p-4 bg-zinc-700 text-white text-center shrink-0 gap-4 justify-center relative items-center">
       <h1>
         {title} {auth.status} as {auth?.user?.name}
       </h1>
@@ -56,6 +56,9 @@ const Header = ({ title }) => {
         </Link>
         <Link href="/auth">
           <a className="bg-slate-800 p-2 rounded-md text-white">Auth</a>
+        </Link>
+        <Link href="/account">
+          <a className="bg-slate-800 p-2 rounded-md text-white">Account</a>
         </Link>
         <Link href="/api/list-orders">
           <a className="bg-slate-800 p-2 rounded-md text-white">List orders</a>

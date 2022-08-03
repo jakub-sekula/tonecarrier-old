@@ -57,7 +57,7 @@ const handler = async (req, res) => {
       const { id } = decoded.data.user;
 
       res.status(200);
-      res.json({ token: token, user: username, id: id });
+      res.json({ token: token, user: username, id: id, statusCode: 200});
     }
   } catch (error) {
     console.log(error);

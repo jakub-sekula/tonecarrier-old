@@ -1,19 +1,14 @@
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import { useAuth } from "../components/contexts/AuthContext";
 
 const App = () => {
-  const { register } = useAuth();
-
+  const { setAuth, user, isAuthenticated, isLoading, register } = useAuth();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [user, setCurrentUser] = useState("");
-
-  // log username to console when successfully registered
-  useEffect(() => {
-    console.log("registered ", user);
-  }, [user]);
+  const router = useRouter()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,14 +19,20 @@ const App = () => {
       console.log(json);
       return;
     }
-    setEmail("");
-    setPassword("");
-    setFirstName("");
-    setLastName("");
-    setCurrentUser(json.username);
+
+    setAuth({
+      status:"SIGNED_IN",
+      user: {
+        id: json.id,
+        name: json.name,
+        user: json.user
+      }
+    })
+
+    router.push('account')
   };
 
-  const loggedInMessage = user ? <span className="text-white">Successfully registered {user}</span> : "";
+  const loggedInMessage = user ? <span className="text-white">Successfully registered {user.name}</span> : "";
 
   return (
     <div className="flex flex-col items-center  h-full py-20">

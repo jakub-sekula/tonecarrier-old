@@ -72,7 +72,8 @@ const handler = async (req, res) => {
     // send a response to the client
     res.status(201).json({
       message: `Created user with id ${registerResponse.id} and username ${registerResponse.username}`,
-      username: registerResponse.username,
+      user: registerResponse.username,
+      name: registerResponse.name,
       id: registerResponse.id,
       token: token,
     });

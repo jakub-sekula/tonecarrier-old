@@ -57,6 +57,6 @@ export const getServerSideProps = async (context) => {
       },
     };
   } catch (error) {
-    console.log("zesralo sie, ", error);
+    console.log("zesralo sie (orders->index.jsx): ", error);
   }
 };

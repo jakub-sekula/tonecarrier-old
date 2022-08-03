@@ -18,7 +18,7 @@ const AuthContext = createContext({
 export const getUser = async (context) => {
   const token = context.req.headers.cookie
     ? cookie.parse(context.req.headers.cookie)["jwt"]
-    : null
+    : null;
 
   if (!token) return { status: "SIGNED_OUT", user: null };
 
@@ -34,38 +34,72 @@ export const getUser = async (context) => {
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({ status: "SIGNED_OUT", user: null });
   const [isLoading, setLoading] = useState(true);
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     const loadUserFromCookies = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/me`)
-          .then((res) => res.json())
-          .catch((err) => console.error("error: ", err));
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/me`).catch(
+          (err) => console.error("error: ", err)
+        );
 
-        if (!res.user) {
+        const json = await res.json();
+
+        if (res.status !== 200) {
           setLoading(false);
+          setAuth({
+            status: "SIGNED_OUT",
+            user: null,
+          });
           return;
         }
-        const { id, name, user } = res.user;
 
+        if (!json.user) {
+          setLoading(false);
+          setAuth({
+            status: "SIGNED_OUT",
+            user: null,
+          });
+          return;
+        }
+
+        const { email: userEmail } = await getEmail();
+
+        const { id, name, user } = json.user;
         setAuth({
           status: "SIGNED_IN",
           user: {
             id,
             name,
             user,
+            email: userEmail,
           },
         });
         setLoading(false);
 
         return;
       } catch (error) {
-        console.log("Error in function loadUserFromCookie (authcontext.js): ", error);
+        console.log(
+          "Error in function loadUserFromCookie (authcontext.js): ",
+          error
+        );
       }
     };
     loadUserFromCookies();
   }, []);
+
+  const getEmail = async () => {
+    const email = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/email`, {
+      method: "GET",
+      headers: new Headers({ "content-type": "application/json" }),
+    })
+      .then((res) => res.json())
+      .catch((error) => {
+        console.error("Incorrect email or password entered.", error);
+      });
+
+    return email;
+  };
 
   const login = async (username, password) => {
     const loginResponse = await fetch(
@@ -78,9 +112,31 @@ export const AuthProvider = ({ children }) => {
           password: password,
         }),
       }
-    ).catch((error) => {
-      console.error("Incorrect email or password entered.", error);
-    });
+    )
+      .then((res) => res.json())
+      .catch((error) => {
+        console.error("Incorrect email or password entered.", error);
+      });
+
+    if (loginResponse.token) {
+      const userData = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/me`
+      ).then((res) => res.json());
+
+      const { id, name, user } = userData.user;
+
+      const { email } = await getEmail();
+
+      setAuth({
+        status: "SIGNED_IN",
+        user: {
+          id: id || null,
+          name: name || null,
+          user: user || null,
+          email: email || null,
+        },
+      });
+    }
 
     return loginResponse;
   };
@@ -104,7 +160,7 @@ export const AuthProvider = ({ children }) => {
       .then((res) => res.json())
       .then(() => {
         setAuth({ status: "SIGNED_OUT", user: null });
-        router.reload(router.pathname)
+        // router.reload(router.pathname);
       })
       .catch((error) => {
         console.error("Error in logout function in authcontext: ", error);
@@ -112,11 +168,21 @@ export const AuthProvider = ({ children }) => {
   };
 
   // set an extra user variable for convenience (for now)
-  const user = auth.user
+  const user = auth.user;
 
   return (
     <AuthContext.Provider
-      value={{ auth, setAuth, login, register, logout, isLoading, user, isAuthenticated:!!user }}
+      value={{
+        auth,
+        setAuth,
+        login,
+        getEmail,
+        register,
+        logout,
+        isLoading,
+        user,
+        isAuthenticated: !!user,
+      }}
     >
       {children}
     </AuthContext.Provider>
