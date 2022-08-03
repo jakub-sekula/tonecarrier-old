@@ -4,7 +4,7 @@ import { useAuth } from "./contexts/AuthContext";
 import Link from "next/link";
 
 const Header = ({ title }) => {
-  const { auth, logout, isLoading, isAuthenticated } = useAuth();
+  const { auth, logout, isAuthLoading, isAuthenticated } = useAuth();
   const router = useRouter();
 
   const handleLogout = async (e) => {
@@ -60,7 +60,7 @@ const Header = ({ title }) => {
         <Link href="/account">
           <a className="bg-slate-800 p-2 rounded-md text-white">Account</a>
         </Link>
-        <Link href="/api/list-orders">
+        <Link href="/orders">
           <a className="bg-slate-800 p-2 rounded-md text-white">List orders</a>
         </Link>
         <Link href="/register">

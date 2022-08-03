@@ -6,13 +6,14 @@ import { getUserDetails } from "../utils/wordpressApi";
 
 const App = () => {
   // get login function from auth context
-  const { auth, login, user, isAuthenticated, isLoading } = useAuth();
-  const router = useRouter();
-  if (isAuthenticated && !isLoading) {
-    router.push("account");
-  }
+  const { login, isAuthenticated, isAuthLoading } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  if (isAuthenticated && !isAuthLoading) {
+    router.push("account");
+  }
 
 
   const handleSubmit = async (e) => {
@@ -22,11 +23,7 @@ const App = () => {
         console.error(err)
       );
 
-      if (res.statusCode !== 200) return;
-
-      // on successful login go to account page
-      router.push("account");
-
+      if (res.statusCode !== 200) return console.log(res.statusCode, res.message);
     } catch (error) {
       console.error("Error in login.jsx: ", error);
     }

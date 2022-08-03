@@ -3,36 +3,32 @@ import { useState } from "react";
 import { useAuth } from "../components/contexts/AuthContext";
 
 const App = () => {
-  const { setAuth, user, isAuthenticated, isLoading, register } = useAuth();
+  const { auth, user, isAuthenticated, isAuthLoading, register } = useAuth();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const router = useRouter()
+  const router = useRouter();
+
+  if (isAuthenticated && !isAuthLoading) {
+    router.push("account");
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await register(email, password, firstName, lastName);
-    const json = await res.json();
 
-    if (res.status !== 201) {
+    if (res.statusCode !== 201) {
       console.log(json);
       return;
     }
-
-    setAuth({
-      status:"SIGNED_IN",
-      user: {
-        id: json.id,
-        name: json.name,
-        user: json.user
-      }
-    })
-
-    router.push('account')
   };
 
-  const loggedInMessage = user ? <span className="text-white">Successfully registered {user.name}</span> : "";
+  const loggedInMessage = user ? (
+    <span className="text-white">Successfully registered {user.name}</span>
+  ) : (
+    ""
+  );
 
   return (
     <div className="flex flex-col items-center  h-full py-20">
@@ -50,7 +46,7 @@ const App = () => {
           First name
         </label>
         <input
-        className="border-2 border-zinc-200 rounded-full px-3 py-2 mb-4"
+          className="border-2 border-zinc-200 rounded-full px-3 py-2 mb-4"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
           type="text"
@@ -64,7 +60,7 @@ const App = () => {
         </label>
 
         <input
-        className="border-2 border-zinc-200 rounded-full px-3 py-2 mb-4"
+          className="border-2 border-zinc-200 rounded-full px-3 py-2 mb-4"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           type="text"
@@ -77,7 +73,7 @@ const App = () => {
           Email
         </label>
         <input
-        className="border-2 border-zinc-200 rounded-full px-3 py-2 mb-4"
+          className="border-2 border-zinc-200 rounded-full px-3 py-2 mb-4"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           type="text"
@@ -90,13 +86,18 @@ const App = () => {
           Password
         </label>
         <input
-        className="border-2 border-zinc-200 rounded-full px-3 py-2 mb-8"
+          className="border-2 border-zinc-200 rounded-full px-3 py-2 mb-8"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           type="password"
           name="password"
         />
-        <button className="bg-yellow-500 rounded-full w-max px-20 py-2 self-center" type="submit">Register</button>
+        <button
+          className="bg-yellow-500 rounded-full w-max px-20 py-2 self-center"
+          type="submit"
+        >
+          Register
+        </button>
       </form>
       {loggedInMessage}
     </div>

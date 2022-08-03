@@ -1,6 +1,5 @@
 // import Cookies from "cookies";
 const cookie = require("cookie");
-import { strict } from "assert";
 import fetch from "node-fetch";
 
 const handler = async (req, res) => {
@@ -45,7 +44,7 @@ const handler = async (req, res) => {
           maxAge: 1000 * 60,
           path: "/",
           httpOnly: true,
-          sameSite: 'strict'
+          sameSite: "strict",
         })
       );
 
@@ -57,7 +56,7 @@ const handler = async (req, res) => {
       const { id } = decoded.data.user;
 
       res.status(200);
-      res.json({ token: token, user: username, id: id, statusCode: 200});
+      res.json({ token: token, user: username, id: id, statusCode: 200 });
     }
   } catch (error) {
     console.log(error);

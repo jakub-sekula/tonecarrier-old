@@ -39,7 +39,7 @@ const handler = async (req,res) => {
         rest: rest
     }
 
-    res.send(response)
+    res.status(200).send(response)
 }
 
 export default handler;

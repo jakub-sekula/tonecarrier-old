@@ -7,7 +7,7 @@ const AuthContext = createContext({
   auth: {},
   user: null,
   isAuthenticated: false,
-  isLoading: true,
+  isAuthLoading: true,
   setAuth: () => {},
   login: () => {},
   register: () => {},
@@ -33,8 +33,7 @@ export const getUser = async (context) => {
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({ status: "SIGNED_OUT", user: null });
-  const [isLoading, setLoading] = useState(true);
-  const router = useRouter();
+  const [isAuthLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
     const loadUserFromCookies = async () => {
@@ -46,21 +45,23 @@ export const AuthProvider = ({ children }) => {
         const json = await res.json();
 
         if (res.status !== 200) {
-          setLoading(false);
+          setAuthLoading(false);
           setAuth({
             status: "SIGNED_OUT",
             user: null,
           });
-          return;
+          //clear cookie if bad token
+          return await logout();
         }
 
         if (!json.user) {
-          setLoading(false);
+          setAuthLoading(false);
           setAuth({
             status: "SIGNED_OUT",
             user: null,
           });
-          return;
+          //clear cookie if bad token
+          return await logout();
         }
 
         const { email: userEmail } = await getEmail();
@@ -75,7 +76,8 @@ export const AuthProvider = ({ children }) => {
             email: userEmail,
           },
         });
-        setLoading(false);
+        setAuthLoading(false);
+        console.log('this bitch ran')
 
         return;
       } catch (error) {
@@ -86,7 +88,13 @@ export const AuthProvider = ({ children }) => {
       }
     };
     loadUserFromCookies();
-  }, []);
+    console.log("loaded user from cookies");
+  }, [isAuthLoading]);
+
+  // log auth to console every time it's changed
+  useEffect(() => {
+    console.log("auth status changed, new auth: ", auth);
+  }, [auth]);
 
   const getEmail = async () => {
     const email = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/email`, {
@@ -125,6 +133,7 @@ export const AuthProvider = ({ children }) => {
 
       const { id, name, user } = userData.user;
 
+      // get email separately because it's not provided by default by the WP REST API
       const { email } = await getEmail();
 
       setAuth({
@@ -141,19 +150,37 @@ export const AuthProvider = ({ children }) => {
     return loginResponse;
   };
   const register = async (email, password, firstName, lastName) => {
-    return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
-      method: "POST",
-      headers: new Headers({ "content-type": "application/json" }),
-      body: JSON.stringify({
-        email: email || "",
-        username: email.split("@")[0] || "",
-        password: password || "",
-        first_name: firstName,
-        last_name: lastName,
-      }),
-    }).catch((error) => {
-      console.error("Error in register function in authcontext: ", error);
+    const registerResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
+      {
+        method: "POST",
+        headers: new Headers({ "content-type": "application/json" }),
+        body: JSON.stringify({
+          email: email || "",
+          username: email.split("@")[0] || "",
+          password: password || "",
+          first_name: firstName,
+          last_name: lastName,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((error) => {
+        console.error("Error in register function in authcontext: ", error);
+      });
+
+    const { id, name, user } = registerResponse.user;
+
+    setAuth({
+      status: "SIGNED_IN",
+      user: {
+        id: id,
+        name: name,
+        user: user,
+        email: email,
+      },
     });
+    return registerResponse;
   };
   const logout = async () => {
     return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`)
@@ -179,7 +206,8 @@ export const AuthProvider = ({ children }) => {
         getEmail,
         register,
         logout,
-        isLoading,
+        isAuthLoading,
+        setAuthLoading,
         user,
         isAuthenticated: !!user,
       }}
