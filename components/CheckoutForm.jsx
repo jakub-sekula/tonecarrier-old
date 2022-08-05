@@ -1,8 +1,11 @@
 import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
+import { useState } from 'react';
 
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
+
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleSubmit = async (event) => {
     // We don't want to let default form submission happen here,
@@ -15,17 +18,20 @@ const CheckoutForm = () => {
       return;
     }
 
-    const result = await stripe.confirmPayment({
+    const {error} = await stripe.confirmPayment({
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: "https://example.com/order/123/complete",
+        return_url: 'http://localhost:3000/account',
       },
     });
 
-    if (result.error) {
-      // Show error to your customer (for example, payment details incomplete)
-      console.log(result.error.message);
+
+    if (error) {
+      // This point will only be reached if there is an immediate error when
+      // confirming the payment. Show error to your customer (for example, payment
+      // details incomplete)
+      setErrorMessage(error.message);
     } else {
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate
@@ -36,7 +42,8 @@ const CheckoutForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <PaymentElement />
-      <button disabled={!stripe}>Submit</button>
+      <button className="text-white p-4 border-2 border-white" disabled={!stripe}>Submit</button>
+      {errorMessage && <div>{errorMessage}</div>}
     </form>
   )
 };

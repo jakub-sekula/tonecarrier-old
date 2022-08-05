@@ -88,16 +88,16 @@ export const AuthProvider = ({ children }) => {
       }
     };
     if (isAuthLoading) {
-      console.log(`IsAuthLoading status: ${isAuthLoading}, loading user from cookies!`)
+      // console.log(`IsAuthLoading status: ${isAuthLoading}, loading user from cookies!`)
       loadUserFromCookies();
     }
-    console.log("loaded user from cookies");
+    // console.log("loaded user from cookies");
   }, [isAuthLoading]);
 
   // log auth to console every time it's changed
-  useEffect(() => {
-    console.log("auth status changed, new auth: ", auth);
-  }, [isAuthLoading]);
+  // useEffect(() => {
+  //   console.log("auth status changed, new auth: ", auth);
+  // }, [isAuthLoading]);
 
   const getEmail = async () => {
     const email = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/email`, {
