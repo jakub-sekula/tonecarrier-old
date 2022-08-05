@@ -7,7 +7,6 @@ export default function InfoCard(props) {
   const router = useRouter();
   const [content, setContent] = useState(props.content);
   const [isEditing, setEditing] = useState(false);
-  const { setAuthLoading } = useAuth();
 
   const { innerFunction } = props;
 

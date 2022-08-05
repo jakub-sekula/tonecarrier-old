@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import React, { createContext, useEffect, useState } from "react";
+import { isatty } from "tty";
 import { validateToken } from "../../utils/wordpressApi";
 const cookie = require("cookie");
 
@@ -77,7 +78,6 @@ export const AuthProvider = ({ children }) => {
           },
         });
         setAuthLoading(false);
-        console.log('this bitch ran')
 
         return;
       } catch (error) {
@@ -87,14 +87,17 @@ export const AuthProvider = ({ children }) => {
         );
       }
     };
-    loadUserFromCookies();
+    if (isAuthLoading) {
+      console.log(`IsAuthLoading status: ${isAuthLoading}, loading user from cookies!`)
+      loadUserFromCookies();
+    }
     console.log("loaded user from cookies");
   }, [isAuthLoading]);
 
   // log auth to console every time it's changed
   useEffect(() => {
     console.log("auth status changed, new auth: ", auth);
-  }, [auth]);
+  }, [isAuthLoading]);
 
   const getEmail = async () => {
     const email = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/email`, {
