@@ -39,3 +39,15 @@ a {
   text-shadow: 0px 4px 50px rgba(239, 175, 35, 0.15),
     0px 4px 25px rgba(239, 175, 35, 0.15), 0px 0px 15px rgba(239, 175, 35, 0.15);
 }
+
+.form_field {
+  @apply border-2 border-zinc-200 rounded-full px-3 py-2
+}
+
+.form_field_label {
+  @apply font-sans text-yellow-500 text-sm font-bold mb-2
+}
+
+.submit_button {
+  @apply bg-yellow-500 rounded-full w-full sm:w-max px-20 py-2 self-center
+}

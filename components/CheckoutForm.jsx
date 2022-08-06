@@ -1,9 +1,11 @@
 import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
 import { useState } from 'react';
 
-const CheckoutForm = () => {
+const CheckoutForm = ({className}) => {
   const stripe = useStripe();
   const elements = useElements();
+
+  console.log('elements:', elements)
 
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -40,9 +42,9 @@ const CheckoutForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={`flex flex-col ${className}`}>
       <PaymentElement />
-      <button className="text-white p-4 border-2 border-white" disabled={!stripe}>Submit</button>
+      <button type='submit' className="submit_button mt-4 self-center" disabled={!stripe}>Confirm payment</button>
       {errorMessage && <div>{errorMessage}</div>}
     </form>
   )

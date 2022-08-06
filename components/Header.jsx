@@ -2,6 +2,7 @@ import Router, { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useAuth } from "./contexts/AuthContext";
 import Link from "next/link";
+import Image from "next/image";
 
 const Header = ({ title }) => {
   const { auth, logout, isAuthLoading, isAuthenticated } = useAuth();
@@ -36,18 +37,19 @@ const Header = ({ title }) => {
   };
 
   return (
-    <header className="flex flex-col h-min-24 p-4 bg-zinc-700 text-white text-center shrink-0 gap-4 justify-center relative items-center">
+    <header className="w-full flex flex-wrap flex-col h-min-24 p-4 bg-zinc-700 text-white text-center shrink-0 gap-4 justify-center relative items-center">
+      <a href="/">
+        <Image src="/static/logo.svg" width={100} height={50}></Image>
+      </a>
       <h1>
-        {title} {auth.status} as {auth?.user?.name}
+        {isAuthenticated && !isAuthLoading ? `Hello there ${auth.user.name}` : null}
       </h1>
-      <ul className="gap-4 flex">
+      <ul className="gap-4 flex flex-wrap">
         {
           //display home button if not on homepage
           router.pathname !== "/" ? (
             <Link href="/">
-              <a className="bg-slate-800 p-2 rounded-md text-white">
-                Home
-              </a>
+              <a className="bg-slate-800 p-2 rounded-md text-white">Home</a>
             </Link>
           ) : null
         }

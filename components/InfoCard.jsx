@@ -1,10 +1,8 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useAuth } from "./contexts/AuthContext";
 
 export default function InfoCard(props) {
-  const router = useRouter();
   const [content, setContent] = useState(props.content);
   const [isEditing, setEditing] = useState(false);
 
@@ -16,15 +14,15 @@ export default function InfoCard(props) {
         <Image
           src={`/static/icons/${props.icon}`}
           alt="Vercel Logo"
-          width={16}
-          height={16}
+          width={24}
+          height={24}
         />
-        <span className="text-sm text-yellow-500 font-bold">
+        <span className="md:text-sm text-yellow-500 font-bold">
           {props.title || "Card title"}
         </span>
       </div>
       {!isEditing && content ? (
-        <span className="pl-1 h-8">{content || "Card content"}</span>
+        <span className="md:pl-1 h-8">{content || "Card content"}</span>
       ) : null}
 
       <input
@@ -34,7 +32,7 @@ export default function InfoCard(props) {
         }}
         type="text"
         name="name"
-        className={`h-8 text-black border-2 border-zinc-200 rounded-full px-3 py-2 w-96 ${
+        className={`h-8 text-black border-2 border-zinc-200 rounded-full px-3 py-2 w-full md:w-96 ${
           !isEditing ? "hidden" : null
         }`}
       />
