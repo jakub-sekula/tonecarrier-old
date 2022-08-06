@@ -1,6 +1,6 @@
 const cookie = require("cookie");
 import fetch, { Headers } from "node-fetch";
-import { validateToken } from "../../../utils/wordpressApi";
+import { validateToken, checkRequestToken } from "../../../utils/wordpressApi";
 
 const handler = async (req, res) => {
   // only accept POST requests
@@ -23,17 +23,8 @@ const handler = async (req, res) => {
     });
   }
 
-  //first check for token in request cookies
-  let token = req.headers.cookie
-    ? cookie.parse(req.headers?.cookie)["jwt"]
-    : null;
-
-  // if there is no cookie, check the authorization header
-  if (token === null) {
-    if (req.headers.authorization) {
-      token = req.headers.authorization.split(" ")[1];
-    }
-  }
+  //first check for token in request (returns null if unauthenticated)
+  let token = checkRequestToken(req)
 
   try {
     // validate token
@@ -98,7 +89,6 @@ const handler = async (req, res) => {
           }
         ).catch((error) => console.log(error));
         let emailResJson = await emailRes.json();
-        console.log("gowno json:", emailResJson);
 
         if (emailRes.status !== 200) {
           return res.status(emailRes.status).json({

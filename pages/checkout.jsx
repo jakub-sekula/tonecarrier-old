@@ -38,14 +38,9 @@ const Page = () => {
   });
 
   const options = {
-    // passing the client secret obtained from the server
     clientSecret: secret,
     appearance: {
       theme: "night",
-      // variables: {
-      //   colorText: "#ffffff",
-      //   colorBackground: "#000000"
-      // },
     },
   };
 

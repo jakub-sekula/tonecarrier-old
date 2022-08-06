@@ -2,7 +2,7 @@ import {
   createWoocommerceOrder,
   retrieveProductById,
 } from "../../utils/wooCommerceApi";
-import { validateToken } from "../../utils/wordpressApi";
+import { checkRequestToken, validateToken } from "../../utils/wordpressApi";
 
 const cookie = require("cookie");
 
@@ -34,23 +34,17 @@ const handler = async (req, res) => {
 
   try {
     //get logged in user token from cookie and validate it
-
-    const token = req.headers.cookie
-    ? cookie.parse(req.headers.cookie)["jwt"]
-    : null
+    const token = checkRequestToken(req);
 
     if (!token) {
-      res.status(401).json("Unauthorised");
-      return;
+      return res.status(401).json("Unauthorised");
     }
 
     // call the validation endpoint
-    const validate = await validateToken(cookie.parse(req.headers.cookie)['jwt'])
-
+    const validate = await validateToken(token);
 
     if (validate.statusCode !== 200) {
-      res.status(400).json("Bad token");
-      return;
+      return res.status(400).json("Bad token");
     }
 
     // get line items from client

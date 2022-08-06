@@ -1,4 +1,4 @@
-import { validateToken } from "../../utils/wordpressApi";
+import { checkRequestToken, validateToken } from "../../utils/wordpressApi";
 import { getCustomerOrders } from "../../utils/wooCommerceApi";
 
 const OrderPage = ({ orders }) => {
@@ -19,14 +19,8 @@ export default OrderPage;
 
 export const getServerSideProps = async (context) => {
   try {
-    const cookie = require("cookie");
-
     // get request cookie, if it's empty set it to null
-    const token = context.req.headers.cookie
-    ? cookie.parse(context.req.headers.cookie)["jwt"]
-    : null;
-
-    // if token exists, check if it's valid
+    const token = checkRequestToken(context.req)
     const validate = await validateToken(token);
 
     if (!validate.success) {

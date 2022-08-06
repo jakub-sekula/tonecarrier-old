@@ -1,8 +1,5 @@
-import { useRouter } from "next/router";
 import React, { createContext, useEffect, useState } from "react";
-import { isatty } from "tty";
-import { validateToken } from "../../utils/wordpressApi";
-const cookie = require("cookie");
+import { checkRequestToken, validateToken } from "../../utils/wordpressApi";
 
 const AuthContext = createContext({
   auth: {},
@@ -17,9 +14,7 @@ const AuthContext = createContext({
 
 // not currently used
 export const getUser = async (context) => {
-  const token = context.req.headers.cookie
-    ? cookie.parse(context.req.headers.cookie)["jwt"]
-    : null;
+  const token = checkRequestToken(context.req)
 
   if (!token) return { status: "SIGNED_OUT", user: null };
 

@@ -1,45 +1,42 @@
-// import Cookies from "cookies";
-const cookie = require('cookie')
+import { checkRequestToken } from "../../utils/wordpressApi";
 
+const handler = async (req, res) => {
+  const token = checkRequestToken(req);
 
-const handler = async (req,res) => {
+  if (!token) {
+    res.status(403).json({ status: "User not logged in", user: null });
+    return;
+  }
 
-    const token = req.headers.cookie
-    ? cookie.parse(req.headers.cookie)["jwt"]
-    : null
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const userDataResponse = await fetch(
+    `${process.env.WOOCOMMERCE_API_URL}/wp-json/wp/v2/users/me`,
+    options
+  );
+  const userDataJson = await userDataResponse.json();
 
-    if (!token) {
-        res.status(403).json({status: "User not logged in", user: null})
-        return
-    }
+  if (userDataResponse.status !== 200) {
+    console.log(userDataJson);
+    return res.status(userDataResponse.status).send(userDataJson);
+  }
 
-    const options = {
-        method: 'GET',
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    }
-    const userDataResponse = await fetch(`${process.env.WOOCOMMERCE_API_URL}/wp-json/wp/v2/users/me`, options)
-    const userDataJson = await userDataResponse.json()
+  const { id, name, slug: user, ...rest } = userDataJson;
+  const response = {
+    status: "Logged in",
+    user: {
+      id,
+      name,
+      user,
+    },
+    rest: rest,
+  };
 
-    if (userDataResponse.status !== 200){
-        console.log(userDataJson)
-        return res.status(userDataResponse.status).send(userDataJson)
-
-    }
-
-    const {id, name, slug:user, ...rest} = userDataJson
-    const response = {
-        status: "Logged in",
-        user: {
-            id,
-            name,
-            user
-        },
-        rest: rest
-    }
-
-    res.status(200).send(response)
-}
+  res.status(200).send(response);
+};
 
 export default handler;
