@@ -22,13 +22,15 @@ const Page = () => {
   const { cartItems } = useCart();
   const { isAuthLoading, user } = useAuth();
   const [secret, setSecret] = useState(null);
+  const [guestCheckout, setGuestCheckout] = useState(true);
   const [orderData, setOrderData] = useState({});
   const [userDetails, setUserDetails] = useState({
     firstName: user?.name.split(" ")[0] || "",
     lastName: user?.name.split(" ")[1] || "",
-    email: user?.email || "mail@mail.com",
+    email: user?.email || "",
     id: user?.id || 0,
   });
+
   const [isEditing, setEditing] = useState(false);
 
   // fetch secret from local storage or generate new one
@@ -40,11 +42,11 @@ const Page = () => {
       console.log("checking local secret first...");
       const localSecret = localStorage.getItem("clientSecret");
 
-      // if (localSecret) {
-      //   console.log("found local client secret!", localSecret);
-      //   setSecret(localSecret);
-      //   return;
-      // }
+      if (localSecret) {
+        console.log("found local client secret!", localSecret);
+        setSecret(localSecret);
+        return;
+      }
 
       if (!isEditing) {
         console.log("Running getSecret!");
@@ -111,7 +113,14 @@ const Page = () => {
     : 0;
 
 
-
+useEffect(()=>{
+  setUserDetails({
+    firstName: user?.name.split(" ")[0] || "",
+    lastName: user?.name.split(" ")[1] || "",
+    email: user?.email || "example@mail.com",
+    id: user?.id || 0,
+  })
+}, [isAuthLoading])
 
 
   return (
@@ -136,6 +145,10 @@ const Page = () => {
                   orderData={orderData}
                   userDetails={userDetails}
                   setUserDetails={setUserDetails}
+                  isEditing={isEditing}
+                  setEditing={setEditing}
+                  guestCheckout={guestCheckout}
+                  setGuestCheckout={setGuestCheckout}
                 />
               </Elements>
             ) : (
