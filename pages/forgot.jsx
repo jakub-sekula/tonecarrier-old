@@ -30,7 +30,7 @@ const Forgot = () => {
 
   return (
     <div className="flex flex-col items-center  h-full py-20 gap-8">
-      <h1 className="font-cooper text-center text-4xl text-[#EFAF23] glow mb-4">
+      <h1 className="font-cooper text-center text-4xl text-primary glow mb-4">
         Reset your password
       </h1>
       <form

@@ -47,28 +47,7 @@ const handler = async (req, res) => {
       return res.status(400).json("Bad token");
     }
 
-    // get line items from client
-    const { line_items } = req.body;
-
-    // create a Stripe payment intent and pass the calculated total price
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: await calculateTotalAmount(line_items),
-      currency: "gbp",
-    });
-
-    const orderData = {
-      customer_id: validate.data.id,
-      payment_method: "stripe",
-      payment_method_title: "Card",
-      set_paid: false,
-      line_items: line_items,
-      meta_data: [
-        {
-          key: "_stripe_intent_id",
-          value: paymentIntent.id,
-        },
-      ],
-    };
+    const orderData = req.body;
 
     const newOrder = await createWoocommerceOrder(orderData);
 

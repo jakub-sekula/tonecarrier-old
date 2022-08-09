@@ -39,7 +39,7 @@ const Account = () => {
   if (isAuthenticated) {
     return (
       <div className="flex flex-col items-center  h-full py-20">
-        <h1 className="font-cooper text-4xl text-[#EFAF23] glow mb-4">
+        <h1 className="font-cooper text-4xl text-primary glow mb-4">
           Hello {name}
         </h1>
         <span className="text-zinc-200 mb-16 font-sans">
@@ -60,12 +60,12 @@ const Account = () => {
                   height={24}
                 ></Image>
                 <Link href={router.pathname}>
-                  <a className="text-[#EFAF23] glow font-bold">
+                  <a className="text-primary glow font-bold">
                     Account details
                   </a>
                 </Link>
               </li>
-              <li className="flex gap-6 md:text-xl border-b border-zinc-500 py-4 hover:text-[#EFAF23]">
+              <li className="flex gap-6 md:text-xl border-b border-zinc-500 py-4 hover:text-primary">
                 <Image
                   src="/static/icons/Shopping_Cart_02.svg"
                   fill="#ff0000"
@@ -109,7 +109,7 @@ const Account = () => {
   } else {
     return (
       <div className="flex flex-col items-center  h-full py-20">
-        <h1 className="font-cooper text-4xl text-[#EFAF23] glow mb-4">
+        <h1 className="font-cooper text-4xl text-primary glow mb-4">
           Loading...
         </h1>
       </div>

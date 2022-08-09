@@ -30,7 +30,7 @@ const App = () => {
 
   return (
     <div className="flex flex-col items-center  h-full py-20">
-      <h1 className="font-cooper text-center text-4xl text-[#EFAF23] glow mb-4">
+      <h1 className="font-cooper text-center text-4xl text-primary glow mb-4">
         Sign in to your account
       </h1>
       <span className="text-yellow-100 mb-16 font-sans text-center">
@@ -64,7 +64,7 @@ const App = () => {
             className="form_field"
           />
         </div>
-        <button className="submit_button" type="submit">
+        <button className="submit_button self-center" type="submit">
           Sign in
         </button>
         <span className="text-zinc-400 text-sm self-center">
