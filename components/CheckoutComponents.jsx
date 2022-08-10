@@ -122,27 +122,11 @@ export const CheckoutPaymentForm = ({
 
     if (!stripe || !elements) return;
 
-    //create order in WooCommerce
-    const order = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/order`, {
-      method: "POST",
-      headers: new Headers({ "content-type": "application/json" }),
-      body: JSON.stringify(orderData),
-    });
-    const orderJson = await order.json();
-
-    console.log("order status:", order.status);
-    console.log("order json: ", orderJson);
-
-    const orderNumber = orderJson.meta_data.find(
-      (obj) => obj.key === "_order_number"
-    ).value;
-    console.log(`Order ${orderNumber} created!`);
-
     // confirm payment in Stripe
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: "http://localhost:3000/account",
+        return_url: "http://localhost:3000/orders/processing",
       },
     });
 
@@ -181,7 +165,7 @@ useEffect(()=>{
               setGuestCheckout(true);
             }}
           />
-          <label for="Yes">Guest</label>
+          <label htmlFor="Yes">Guest</label>
 
           <input
             type="radio"
@@ -192,7 +176,7 @@ useEffect(()=>{
               setGuestCheckout(false);
             }}
           />
-          <label for="No">Registered</label>
+          <label htmlFor="No">Registered</label>
         </div>
         {guestCheckout ? (
           <>
@@ -243,14 +227,6 @@ useEffect(()=>{
               A user account will be created for you so you can access your
               downloads at any time
             </span>
-            {/* <button
-              onClick={(e) => {
-                e.preventDefault();
-                setEditing(!isEditing);
-              }}
-            >
-              fuck me up
-            </button> */}
           </>
         ) : (
           <div>

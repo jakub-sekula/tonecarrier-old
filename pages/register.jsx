@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../components/contexts/AuthContext";
 
 const App = () => {
@@ -9,6 +9,7 @@ const App = () => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
 
   if (isAuthenticated && !isAuthLoading) {
@@ -20,10 +21,15 @@ const App = () => {
     const res = await register(email, password, firstName, lastName);
 
     if (res.statusCode !== 201) {
-      console.log(json);
+      console.log("response in register.jsx:", res.message);
+      setError(res.message)
       return;
     }
   };
+
+  useEffect(()=>{
+    console.log({error})
+  },[error])
 
   const loggedInMessage = user ? (
     <span className="text-white">Successfully registered {user.name}</span>
@@ -95,8 +101,12 @@ const App = () => {
         <button className="submit_button self-center" type="submit">
           Register
         </button>
+        {error ? `${error}` : null}
         <span className="text-zinc-400 text-sm self-center">
-          Already registered? <Link href='/login'><a>Sign in</a></Link>
+          Already registered?{" "}
+          <Link href="/login">
+            <a>Sign in</a>
+          </Link>
         </span>
       </form>
       {loggedInMessage}

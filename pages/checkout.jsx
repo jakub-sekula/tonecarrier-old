@@ -11,6 +11,7 @@ import {
   CheckoutProducts,
   CheckoutPaymentForm,
 } from "../components/CheckoutComponents";
+import Link from "next/link";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -19,7 +20,7 @@ const stripePromise = loadStripe(
 );
 
 const Page = () => {
-  const { cartItems } = useCart();
+  const { cartItems, isCartLoading } = useCart();
   const { isAuthLoading, user } = useAuth();
   const [secret, setSecret] = useState(null);
   const [guestCheckout, setGuestCheckout] = useState(true);
@@ -31,14 +32,27 @@ const Page = () => {
     id: user?.id || 0,
   });
 
-  const [isEditing, setEditing] = useState(false);
+  useEffect(() => {
+    if (!isAuthLoading) {
+      setUserDetails({
+        firstName: user?.name.split(" ")[0] || "",
+        lastName: user?.name.split(" ")[1] || "",
+        email: user?.email || "twojstary@gmail.com",
+        id: user?.id || 0,
+      });
+    }
+  }, [isAuthLoading]);
 
   // fetch secret from local storage or generate new one
   useEffect(() => {
     console.log("useEffect ran");
-    console.log({ isAuthLoading, secret, cartItems });
+    console.log({ isAuthLoading, isCartLoading, secret, cartItems });
 
-    if (!isAuthLoading && !secret && cartItems.length) {
+    if (!cartItems.length) {
+      return console.log("cart is empty!");
+    }
+
+    if (!isAuthLoading && !isCartLoading && !secret && cartItems.length) {
       console.log("checking local secret first...");
       const localSecret = localStorage.getItem("clientSecret");
 
@@ -48,52 +62,31 @@ const Page = () => {
         return;
       }
 
-      if (!isEditing) {
-        console.log("Running getSecret!");
-        const getSecret = async () => {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/payments/create-payment-intent`,
-            {
-              method: "POST",
-              body: JSON.stringify({
-                price: String(Math.floor(100 * totalPrice)),
-                email: user?.email || userDetails.email,
-              }),
-            }
-          );
-          const paymentIntentRes = await res.json();
-          setSecret(paymentIntentRes.client_secret);
-          // localStorage.setItem("clientSecret", paymentIntentRes.client_secret);
-
-          return;
-        };
-        getSecret();
-      }
-    }
-  }, [isAuthLoading, isEditing]);
-
-  // set orderData when secret is fetched
-  useEffect(() => {
-    if (!isAuthLoading) {
-      const orderData = {
-        customer_id: user?.id || 0,
-        payment_method: "stripe",
-        payment_method_title: "Card",
-        set_paid: true,
-        line_items: cartItems.map((item) => {
-          return { product_id: item.id, quantity: 1 };
-        }),
-        meta_data: [
+      console.log("Running getSecret!");
+      const getSecret = async () => {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/payments/create-payment-intent`,
           {
-            key: "_stripe_intent_id",
-            value: secret,
-          },
-        ],
+            method: "POST",
+            body: JSON.stringify({
+              price: String(Math.floor(100 * totalPrice)),
+              email: user?.email || userDetails.email,
+            }),
+          }
+        );
+        // console.log('res is', res)
+
+        if (res.status !== 201) return console.log("Fetching secret failed");
+
+        const paymentIntentRes = await res.json();
+        setSecret(paymentIntentRes.client_secret);
+        // localStorage.setItem("clientSecret", paymentIntentRes.client_secret);
+
+        return;
       };
-      console.log("orderdata within useeffect: ", orderData);
-      setOrderData(orderData);
+      getSecret();
     }
-  }, [secret]);
+  }, [isAuthLoading, isCartLoading]);
 
   const options = {
     clientSecret: secret,
@@ -112,17 +105,6 @@ const Page = () => {
       }, 0)
     : 0;
 
-
-useEffect(()=>{
-  setUserDetails({
-    firstName: user?.name.split(" ")[0] || "",
-    lastName: user?.name.split(" ")[1] || "",
-    email: user?.email || "example@mail.com",
-    id: user?.id || 0,
-  })
-}, [isAuthLoading])
-
-
   return (
     <>
       <h1 className="font-cooper text-center text-4xl text-primary glow mb-4">
@@ -133,27 +115,35 @@ useEffect(()=>{
       </span>
       <div className="flex gap-8 flex-col-reverse md:grid md:grid-cols-12 md:gap-10">
         <div className="md:col-span-7 flex flex-col gap-4">
-          
-            {!isAuthLoading && secret && cartItems ? (
-              <Elements
-                stripe={stripePromise}
-                options={options}
-                key={options.clientSecret}
-              >
-                <CheckoutPaymentForm
-                  id="checkout"
-                  orderData={orderData}
-                  userDetails={userDetails}
-                  setUserDetails={setUserDetails}
-                  isEditing={isEditing}
-                  setEditing={setEditing}
-                  guestCheckout={guestCheckout}
-                  setGuestCheckout={setGuestCheckout}
-                />
-              </Elements>
-            ) : (
-              <span>Loading Stripe checkout</span>
-            )}
+          {!cartItems.length ? (
+            <span>
+              There are no items in your cart.{" "}
+              <Link href="/products">
+                <a>Why don't you add some?</a>
+              </Link>
+            </span>
+          ) : null}
+
+          {!isAuthLoading && !secret ? (
+            <span>zesralo sie</span>
+          ) : null}
+
+          {!isAuthLoading && secret ? (
+            <Elements
+              stripe={stripePromise}
+              options={options}
+              key={options.clientSecret}
+            >
+              <CheckoutPaymentForm
+                id="checkout"
+                orderData={orderData}
+                userDetails={userDetails}
+                setUserDetails={setUserDetails}
+                guestCheckout={guestCheckout}
+                setGuestCheckout={setGuestCheckout}
+              />
+            </Elements>
+          ) : null}
         </div>
         <div className="flex flex-col gap-4 md:col-span-5">
           <CheckoutFieldGroup title="Your products">

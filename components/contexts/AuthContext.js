@@ -15,7 +15,7 @@ const AuthContext = createContext({
 
 // not currently used
 export const getUser = async (context) => {
-  const token = checkRequestToken(context.req)
+  const token = checkRequestToken(context.req);
 
   if (!token) return { status: "SIGNED_OUT", user: null };
 
@@ -31,7 +31,7 @@ export const getUser = async (context) => {
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({ status: "SIGNED_OUT", user: null });
   const [isAuthLoading, setAuthLoading] = useState(true);
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     const loadUserFromCookies = async () => {
@@ -161,6 +161,10 @@ export const AuthProvider = ({ children }) => {
       .catch((error) => {
         console.error("Error in register function in authcontext: ", error);
       });
+
+    if (!registerResponse.user) {
+      return registerResponse;
+    }
 
     const { id, name, user } = registerResponse.user;
 

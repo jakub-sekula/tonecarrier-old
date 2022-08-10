@@ -22,7 +22,7 @@ export const fetchWooCommerceProducts = async (endpoint, params) => {
 export const createWoocommerceOrder = async (data) => {
   try {
     const response = await api.post("orders", data);
-    return response;
+    return response.data;
   } catch (error) {
     throw new Error(error);
   }

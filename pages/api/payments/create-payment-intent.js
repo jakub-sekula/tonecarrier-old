@@ -5,6 +5,7 @@ const handler = async (req, res) => {
   const { price, email } = body;
 
   console.log("email in payment intent api: ", email)
+  if (!email) return res.status(400).send()
 
   const paymentIntent = await stripe.paymentIntents.create({
     amount: price,
@@ -12,7 +13,7 @@ const handler = async (req, res) => {
     automatic_payment_methods: { enabled: true },
     receipt_email: email,
   });
-  res.json({
+  return res.status(201).json({
     client_secret: paymentIntent.client_secret,
     id: paymentIntent.id,
   });

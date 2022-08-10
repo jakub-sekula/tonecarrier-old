@@ -2,11 +2,6 @@ import {
   createWoocommerceOrder,
   retrieveProductById,
 } from "../../utils/wooCommerceApi";
-import { checkRequestToken, validateToken } from "../../utils/wordpressApi";
-
-const cookie = require("cookie");
-
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const calculateTotalAmount = async (lineItems) => {
   const total = await Promise.all(
@@ -27,34 +22,39 @@ const getProductTotal = async (lineItem) => {
 
 //Main API call handler
 const handler = async (req, res) => {
+  const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
   if (req.method !== "POST") {
-    res.status(405).send({ message: "Only POST requests allowed" });
+    res.status(405).json("Only POST requests allowed");
+    return;
+  }
+
+  if (!req.query.payment_intent) {
+    res.status(400).json("Bad request");
     return;
   }
 
   try {
-    //get logged in user token from cookie and validate it
-    const token = checkRequestToken(req);
+    const { status, client_secret } = await stripe.paymentIntents.retrieve(
+      req.query.payment_intent
+    );
 
-    if (!token) {
-      return res.status(401).json("Unauthorised");
-    }
-
-    // call the validation endpoint
-    const validate = await validateToken(token);
-
-    if (validate.statusCode !== 200) {
-      return res.status(400).json("Bad token");
-    }
+    console.log("order.js ", { status, client_secret });
 
     const orderData = req.body;
 
+    if (status !== "succeeded") return res.status(400).json(newOrder.data);
+
     const newOrder = await createWoocommerceOrder(orderData);
 
-    res.status(201).json(newOrder.data);
+    const orderNumber = newOrder.meta_data.find(
+      (obj) => obj.key === "_order_number"
+    ).value;
+
+    return res.status(201).json({message: "Order created", orderNumber: orderNumber});
   } catch (error) {
-    console.log(error);
-    res.status(502).json("Bad gateway");
+    console.log("error in order.js ", error);
+    return res.status(500).json("Internal server error");
   }
 };
 
