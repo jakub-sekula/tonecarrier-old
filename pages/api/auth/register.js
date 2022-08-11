@@ -1,5 +1,5 @@
 import fetch, { Headers } from "node-fetch";
-const cookie = require('cookie')
+const cookie = require("cookie");
 
 const handler = async (req, res) => {
   const { email, password, first_name, last_name } = req.body;
@@ -35,50 +35,61 @@ const handler = async (req, res) => {
     const registerResponse = await data.json();
 
     if (registerResponse?.code === "existing_user_login") {
-      console.log(registerResponse.code, JSON.parse(options.body))
+      console.log(registerResponse.code, JSON.parse(options.body));
       return res.status(400).json({ message: registerResponse.code });
     }
 
     if (registerResponse?.code === "rest_invalid_param") {
-      console.log(registerResponse.code, JSON.parse(options.body))
+      console.log(registerResponse.code, JSON.parse(options.body));
       return res.status(400).json({ message: registerResponse.code });
     }
 
     if (data.status !== 201) {
-      console.log(data.statusText)
-      return res.status(data.status).json(data.statusText)
+      console.log(data.statusText);
+      return res.status(data.status).json(data.statusText);
     }
 
-
-    // if successful, immediately log in the new user
-    const loginResponse = await fetch(`${process.env.WOOCOMMERCE_API_URL}/wp-json/jwt-auth/v1/token`, {
-      method: "POST",
-      headers: new Headers({ "content-type": "application/json" }),
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    }).then((res) => res.json());
+    // if successful, immediately log in the new user by getting a new token
+    const loginResponse = await fetch(
+      `${process.env.WOOCOMMERCE_API_URL}/wp-json/jwt-auth/v1/token`,
+      {
+        method: "POST",
+        headers: new Headers({ "content-type": "application/json" }),
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      }
+    ).then((res) => res.json());
 
     // login route returns an access token for the user, set it as a cookie
     const { token } = loginResponse.data;
-    res.setHeader('Set-Cookie', cookie.serialize('jwt', token, {
-      maxAge: 1000 * 60,
-      path: "/",
-      httpOnly: true,
-      sameSite: 'strict'
-    }))
+    res.setHeader(
+      "Set-Cookie",
+      cookie.serialize("jwt", token, {
+        maxAge: 1000 * 60,
+        path: "/",
+        httpOnly: true,
+        sameSite: "strict",
+      })
+    );
 
     // send a response to the client
     res.status(201).json({
-      message: `Created user with id ${registerResponse.id} and username ${registerResponse.username}`,
-      username: registerResponse.username,
-      id: registerResponse.id,
+      statusCode: 201,
+      message: `user created`,
       token: token,
+      user: {
+        user: registerResponse.username,
+        name: registerResponse.name,
+        id: registerResponse.id,
+        email:email
+      },
     });
+
   } catch (error) {
     console.log(error);
-    res.status(502).json("502 Bad gateway");
+    res.status(502).json({ statusCode: 502, message: "Bad gateway" });
   }
 };
 

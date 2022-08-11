@@ -1,74 +1,113 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useAuth } from "../components/contexts/AuthContext";
 
 const App = () => {
-  const { register } = useAuth();
-
+  const { auth, user, isAuthenticated, isAuthLoading, register } = useAuth();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [user, setCurrentUser] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
 
-  // log username to console when successfully registered
-  useEffect(() => {
-    console.log('registered ', user);
-  }, [user]);
+  if (isAuthenticated && !isAuthLoading) {
+    router.push("account");
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-      const res = await register(email, password, firstName, lastName);
-      const json = await res.json();
+    const res = await register(email, password, firstName, lastName);
 
-      if (res.status !== 201) {
-        console.log(json);
-        return;
-      }
-      setEmail("");
-      setPassword("");
-      setFirstName("");
-      setLastName("");
-      setCurrentUser(json.username);
+    if (res.statusCode !== 201) {
+      console.log("response in register.jsx:", res.message);
+      setError(res.message)
+      return;
+    }
   };
 
-  const loggedInMessage = user ? <h1>Successfully registered {user}</h1> : "";
+  useEffect(()=>{
+    console.log({error})
+  },[error])
+
+  const loggedInMessage = user ? (
+    <span className="text-white">Successfully registered {user.name}</span>
+  ) : (
+    ""
+  );
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="flex flex-col w-48">
-        <input
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          type="text"
-          name="firstName"
-          className="border border-black"
-        />
-        <label htmlFor="firstName">First name</label>
-        <input
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          type="text"
-          name="lastName"
-          className="border border-black"
-        />
-        <label htmlFor="lastName">Last name</label>
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type="text"
-          name="email"
-          className="border border-black"
-        />
-        <label htmlFor="email">Email</label>
-        <input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          type="password"
-          name="password"
-          className="border border-black"
-        />
-        <label htmlFor="password">Password</label>
-        <button type="submit">Submit</button>
+    <div className="flex flex-col items-center  h-full py-20">
+      <h1 className="font-cooper text-center text-4xl text-primary glow mb-4">
+        Register a new account
+      </h1>
+      <span className="text-yellow-100  text-center mb-16 font-sans">
+        You need an account to view your orders and download files
+      </span>
+      <form
+        onSubmit={handleSubmit}
+        className="flex  flex-col w-full sm:w-96 mb-10 gap-4"
+      >
+        <div className="flex flex-col">
+          <label className="form_field_label" htmlFor="firstName">
+            First name
+          </label>
+          <input
+            className="form_field"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            type="text"
+            name="firstName"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="form_field_label" htmlFor="lastName">
+            Last name
+          </label>
+
+          <input
+            className="form_field"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            type="text"
+            name="lastName"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="form_field_label" htmlFor="email">
+            Email
+          </label>
+          <input
+            className="form_field"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            name="email"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="form_field_label" htmlFor="password">
+            Password
+          </label>
+          <input
+            className="form_field"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            name="password"
+          />
+        </div>
+        <button className="submit_button self-center" type="submit">
+          Register
+        </button>
+        {error ? `${error}` : null}
+        <span className="text-zinc-400 text-sm self-center">
+          Already registered?{" "}
+          <Link href="/login">
+            <a>Sign in</a>
+          </Link>
+        </span>
       </form>
       {loggedInMessage}
     </div>

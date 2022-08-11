@@ -1,29 +1,24 @@
 import fetch from "node-fetch";
 import { getCustomerOrders } from "../../utils/wooCommerceApi";
-import { validateToken } from "../../utils/wordpressApi";
-// import { validateToken } from "../../utils/wordpressApi";
+import { checkRequestToken, validateToken } from "../../utils/wordpressApi";
 
 const handler = async (req, res) => {
-  const cookie = require('cookie')
 
-  if (!req.headers.cookie) {
-    console.log('zesralo sie - no cookie in header')
-    res.status(400).send()
-    return
-  }
+  // if (!req.headers.cookie) {
+  //   res.status(400).json({message: 'No cookie found', status: 400})
+  //   return
+  // }
 
-  const token = req.headers.cookie
-  ? cookie.parse(req.headers.cookie)["jwt"]
-  : null
+  const token = checkRequestToken(context.req)
 
   // return if there is no token cookie
   if (!token) {
-    res.status(401).json("User not logged in - no token found");
+    res.status(401).json({message: "No token found", status: 401});
     return;
   }
 
   // if token exists, check if it's valid
-  const validate = await validateToken(cookie.parse(req.headers.cookie)['jwt'])
+  const validate = await validateToken(token)
 
   if (validate.statusCode !== 200) {
     res.status(403).json({errorMessage: 'Token validation failed', originalData: validate});

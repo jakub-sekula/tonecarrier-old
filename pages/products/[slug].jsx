@@ -2,17 +2,19 @@ import { fetchWooCommerceProducts } from "../../utils/wooCommerceApi";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useAuth } from "../../components/contexts/AuthContext";
+import { useCart } from "../../components/contexts/CartContext";
+import { useId } from "react";
 
-function ProductPage({ product}) {
+
+function ProductPage({ product }) {
   const router = useRouter();
-  const auth = useAuth()
+  const { addToCart } = useCart();
 
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return <div className="text-white">Loading...</div>;
   }
 
-  const data = {
+  const line_items = {
     line_items: [
       {
         product_id: `${product.id}`,
@@ -27,10 +29,12 @@ function ProductPage({ product}) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(line_items),
     });
 
     const orderJson = await order.json();
+
+    console.log(orderJson)
 
     if (order.status !== 201) {
       console.error(
@@ -46,8 +50,9 @@ function ProductPage({ product}) {
     console.log(`Order ${orderNumber} created!`);
   };
 
+
   return (
-    <div className="w-64 flex flex-col mx-auto">
+    <div className="w-64 flex flex-col mx-auto text-white">
       <Image
         src={product.images[0].src}
         alt={product.images[0].alt}
@@ -61,6 +66,20 @@ function ProductPage({ product}) {
         <a className="underline text-blue-700 hover:text-slate-900">Go back</a>
       </Link>
       <button onClick={createOrder}>Order</button>
+      <button
+        onClick={() => {
+          addToCart({
+            id: product.id,
+            key: Math.random().toString(16).slice(2, 10),
+            name: product.name,
+            price: product.price,
+            img: product.images[0].src || "",
+            url: `${process.env.NEXT_PUBLIC_HOME_URL}/products/${product.slug}`
+          });
+        }}
+      >
+        Add to cart
+      </button>
     </div>
   );
 }

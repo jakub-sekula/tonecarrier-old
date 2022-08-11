@@ -54,3 +54,18 @@ export const validateToken = async (token, context = undefined) => {
     console.log("Error within wordpressApi.js: \n", error);
   }
 };
+
+export const checkRequestToken = (req) => {
+  let token = req.headers.cookie
+    ? cookie.parse(req.headers?.cookie)["jwt"]
+    : null;
+
+  // if there is no cookie, check the authorization header
+  if (token === null) {
+    if (req.headers.authorization) {
+      token = req.headers.authorization.split(" ")[1];
+    }
+  }
+
+  return token;
+};
