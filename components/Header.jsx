@@ -77,7 +77,7 @@ const Header = (props) => {
         <Link href="/login">
           <a className="bg-slate-800 p-2 rounded-md text-white">Log in</a>
         </Link>
-        <Link href="/checkout?price=21.37">
+        <Link href="/checkout">
           <a className="bg-slate-800 p-2 rounded-md text-white">Checkout</a>
         </Link>
         <button

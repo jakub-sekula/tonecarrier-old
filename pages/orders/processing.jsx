@@ -8,7 +8,7 @@ const ProcessingPage = () => {
   const router = useRouter();
   const [error, setError] = useState("");
   const { user, isAuthLoading } = useAuth();
-  const { cartItems } = useCart();
+  const { cartItems, clearCart } = useCart();
 
   const { payment_intent_client_secret: secret, payment_intent: intentId } =
     router.query;
@@ -50,6 +50,7 @@ const ProcessingPage = () => {
 
         const { orderNumber } = await order.json();
         console.log(`Order ${orderNumber} created!`);
+        clearCart()
         router.push('/')
       };
 

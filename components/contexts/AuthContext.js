@@ -48,8 +48,9 @@ export const AuthProvider = ({ children }) => {
             status: "SIGNED_OUT",
             user: null,
           });
-          //clear cookie if bad token
-          return await logout();
+          // //clear cookie if bad token
+          // return await logout();
+          return
         }
 
         if (!json.user) {
@@ -58,8 +59,9 @@ export const AuthProvider = ({ children }) => {
             status: "SIGNED_OUT",
             user: null,
           });
-          //clear cookie if bad token
-          return await logout();
+          // //clear cookie if bad token
+          // return await logout();
+          return
         }
 
         const { email: userEmail } = await getEmail();
@@ -120,24 +122,8 @@ export const AuthProvider = ({ children }) => {
       });
 
     if (loginResponse.token) {
-      const userData = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/me`
-      ).then((res) => res.json());
-
-      const { id, name, user } = userData.user;
-
-      // get email separately because it's not provided by default by the WP REST API
-      const { email } = await getEmail();
-
-      setAuth({
-        status: "SIGNED_IN",
-        user: {
-          id: id || null,
-          name: name || null,
-          user: user || null,
-          email: email || null,
-        },
-      });
+      // set auth to loading to refresh user data
+      setAuthLoading(true);
     }
 
     return loginResponse;
@@ -180,15 +166,19 @@ export const AuthProvider = ({ children }) => {
     return registerResponse;
   };
   const logout = async () => {
-    return await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`)
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`)
       .then((res) => res.json())
       .then(() => {
-        setAuth({ status: "SIGNED_OUT", user: null });
-        // router.reload(router.pathname);
+        // setAuth({ status: "SIGNED_OUT", user: null });
+        setAuthLoading(true)
+        console.log("logging out!");
       })
       .catch((error) => {
         console.error("Error in logout function in authcontext: ", error);
       });
+    return 
+
+    ;
   };
 
   // set an extra user variable for convenience (for now)

@@ -16,7 +16,7 @@ export const CheckoutPlaceOrderButton = ({ form }) => {
       <button
         type="submit"
         form={form}
-        className="text-zinc-900 bg-primary rounded-md w-max px-6 glow py-2 self-center font-bold"
+        className="button"
       >
         Place order
       </button>
@@ -100,6 +100,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 import { useAuth } from "./contexts/AuthContext";
+import { useRouter } from "next/router";
 
 export const CheckoutPaymentForm = ({
   userDetails,
@@ -108,14 +109,17 @@ export const CheckoutPaymentForm = ({
   isEditing,
   setEditing,
   guestCheckout,
-  setGuestCheckout
+  setGuestCheckout,
 }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState(null);
-  const {user} = useAuth()
+  const [loginData, setLoginData] = useState({ username: "", password: "" });
+  const { setAuthLoading, user, logout, login } = useAuth();
+  const router = useRouter();
 
-  console.log("userdetails", userDetails);
+  // console.log("userdetails", userDetails);
+  // console.log("user", user);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -136,110 +140,30 @@ export const CheckoutPaymentForm = ({
     }
   };
 
-  const handleChange = (e) => {
-    setUserDetails({
-      ...userDetails,
-      [e.target.name]: e.target.value,
-    });
-  };
+  
+  
 
-useEffect(()=>{
-  setGuestCheckout(!user)
-  console.log("!!user is ",!user)
-},[user])
+  useEffect(() => {
+    setGuestCheckout(!user);
+    console.log("!!user is ", !user);
+  }, [user]);
 
   useEffect(() => {
     console.log("guest checkout status changed: ", guestCheckout);
   }, [guestCheckout]);
 
   return (
-    <form id="checkout" onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <CheckoutFieldGroup title="Your details">
-        <div>
-          <input
-            type="radio"
-            checked={guestCheckout}
-            id="Yes"
-            name="guestCheckout"
-            onChange={() => {
-              setGuestCheckout(true);
-            }}
-          />
-          <label htmlFor="Yes">Guest</label>
-
-          <input
-            type="radio"
-            checked={!guestCheckout}
-            id="No"
-            name="guestCheckout"
-            onChange={() => {
-              setGuestCheckout(false);
-            }}
-          />
-          <label htmlFor="No">Registered</label>
-        </div>
-        {guestCheckout ? (
-          <>
-            <div className="flex flex-col sm:flex-row gap-4">
-              {/* First className */}
-              <div className="flex flex-col w-full">
-                <label className="form_field_label w-full" htmlFor="firstName">
-                  First name
-                </label>
-                <input
-                  value={userDetails["firstName"]}
-                  onChange={handleChange}
-                  type="text"
-                  name="firstName"
-                  className="form_field w-full"
-                />
-              </div>
-
-              {/* Last name */}
-              <div className="flex flex-col w-full">
-                <label className="form_field_label w-full" htmlFor="lastName">
-                  Last name
-                </label>
-                <input
-                  value={userDetails["lastName"]}
-                  onChange={handleChange}
-                  type="text"
-                  name="lastName"
-                  className="form_field w-full"
-                />
-              </div>
-            </div>
-
-            {/* Email */}
-            <div className="flex flex-col w-full">
-              <label className="form_field_label w-full" htmlFor="email">
-                Email
-              </label>
-              <input
-                value={userDetails["email"]}
-                onChange={handleChange}
-                type="email"
-                name="email"
-                className="form_field w-full"
-              />
-            </div>
-            <span className="text-xs text-zinc-300">
-              A user account will be created for you so you can access your
-              downloads at any time
-            </span>
-          </>
-        ) : (
-          <div>
-            <p>{`${userDetails.firstName} ${userDetails.lastName}`}</p>
-            <p>{`${userDetails.email}`}</p>
-            <button onClick={(e)=>{e.preventDefault()}}>sign out</button>
-          </div>
-        )}
-      </CheckoutFieldGroup>
-      <CheckoutFieldGroup title="Payment details">
-        <PaymentElement />
-        {errorMessage && <div>{errorMessage}</div>}
-      </CheckoutFieldGroup>
-    </form>
+    <>
+      <form
+        id="checkout"
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4"
+      >
+        <CheckoutFieldGroup title="Payment details">
+          <PaymentElement />
+          {errorMessage && <div>{errorMessage}</div>}
+        </CheckoutFieldGroup>
+      </form>
+    </>
   );
 };

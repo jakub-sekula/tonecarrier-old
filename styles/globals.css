@@ -41,7 +41,7 @@ a {
 }
 
 .form_field {
-  @apply border-2 border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:bg-yellow-50
+  @apply border-2 border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:bg-yellow-50 disabled:bg-zinc-100 disabled:text-zinc-400
 }
 
 .form_field_label {
@@ -50,4 +50,8 @@ a {
 
 .submit_button {
   @apply bg-yellow-500 rounded-full w-full sm:w-max px-20 py-2 text-zinc-900
+}
+
+.button {
+  @apply text-zinc-900 bg-primary rounded-md w-max px-6 glow py-2 self-center font-bold
 }
