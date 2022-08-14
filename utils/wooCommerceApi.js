@@ -58,3 +58,31 @@ export const getCustomerOrders = async (customerId) => {
     };
   }
 };
+
+
+export const getDownloadLinks = async (userId) => {
+  const md5 = require("md5");
+  console.log('getting links!')
+  const response = await fetch(
+    `${process.env.WOOCOMMERCE_API_URL}/wp-json/wc/v3/customers/${userId}/downloads`,
+    {
+      method: "GET",
+      headers: new Headers({
+        authorization: `Basic ${process.env.ADMIN_BASIC_AUTH_HEADER_KEY}`,
+      }),
+    }
+  );
+  const data = await response.json();
+
+  const orders = [...new Set(data.map((item) => item.order_id))];
+
+  const linkList = orders.map((order) => {
+    const filtered = data.filter((item) => item.order_id === order);
+    const links = filtered.map((item) => {
+      return { name: item.file.name, url: item.file.file, hash: md5(item.file.file)  };
+    });
+    return { order_id: order, links: links };
+  });
+
+  return linkList;
+};

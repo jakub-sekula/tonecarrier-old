@@ -1,6 +1,5 @@
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { useAuth } from "../components/contexts/AuthContext";
 import { useCart } from "../components/contexts/CartContext";
 import { useEffect, useState } from "react";
@@ -11,7 +10,7 @@ import {
   CheckoutProducts,
   CheckoutPaymentForm,
 } from "../components/CheckoutComponents";
-import Link from "next/link";
+import { AnimatePresence } from "framer-motion";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -21,7 +20,7 @@ const stripePromise = loadStripe(
 
 const Page = () => {
   const { cartItems, isCartLoading } = useCart();
-  const { setAuthLoading, isAuthLoading, user, login, logout } = useAuth();
+  const { isAuthLoading, user, login, logout } = useAuth();
   const [secret, setSecret] = useState(null);
   const [guestCheckout, setGuestCheckout] = useState(true);
   const [orderData, setOrderData] = useState({});
@@ -171,7 +170,7 @@ const Page = () => {
 
   const handleUserInfoEdit = async (e) => {
     e.preventDefault();
-    if (!isEditing) {
+    if (!isEditing && secret) {
       setEditing(true);
       setSecret(null);
       await cancelIntent();
@@ -210,41 +209,57 @@ const Page = () => {
       </span>
       <div className="flex gap-8 flex-col-reverse md:grid md:grid-cols-12 md:gap-10">
         <div className="md:col-span-7 flex flex-col gap-4">
-          {!cartItems.length ? (
-            <span>
-              There are no items in your cart.{" "}
-              <Link href="/products">
-                <a>Why don't you add some?</a>
-              </Link>
-            </span>
-          ) : null}
-
           <CheckoutFieldGroup title="Your details">
             {/* Guest and login selector if user is not signed in */}
-            <div className={`${user ? "hidden" : null}`}>
-              <input
-                type="radio"
-                checked={guestCheckout}
-                id="Yes"
-                name="guestCheckout"
-                onChange={() => {
-                  setGuestCheckout(true);
-                }}
-                disabled={!!user}
-              />
-              <label htmlFor="Yes">Guest</label>
-
-              <input
-                type="radio"
-                checked={!guestCheckout}
-                id="No"
-                name="guestCheckout"
-                onChange={() => {
-                  setGuestCheckout(false);
-                }}
-                disabled={!!user}
-              />
-              <label htmlFor="No">Registered</label>
+            <div
+            
+              className={`${
+                user ? "hidden" : ""
+              } flex gap-4 w-full mx-auto h-16 mb-4`}
+            >
+              <div
+                className={` ${
+                  guestCheckout
+                    ? "border-primary shadow-lg glow shadow-zinc-800 bg-primary text-zinc-900"
+                    : "text-zinc-400 border-zinc-500"
+                } flex w-full justify-center items-center relative rounded-lg border font-sans text-cente transition-all duration-150 ease-out`}
+              >
+                <input
+                  className="absolute w-full h-full opacity-0"
+                  type="radio"
+                  checked={guestCheckout}
+                  id="Yes"
+                  name="guestCheckout"
+                  onChange={() => {
+                    setGuestCheckout(true);
+                  }}
+                  disabled={!!user}
+                />
+                <label htmlFor="Yes">Guest checkout</label>
+              </div>
+              <div
+                className={` ${
+                  !guestCheckout
+                    ? "border-primary shadow-lg glow shadow-zinc-800 bg-primary text-zinc-900"
+                    : "text-zinc-400 border-zinc-500"
+                } flex w-full justify-center items-center relative rounded-lg border font-sans  text-center transition-all duration-150 ease-out`}
+              >
+                <input
+                  className="absolute w-full h-full opacity-0"
+                  type="radio"
+                  checked={!guestCheckout}
+                  id="No"
+                  name="guestCheckout"
+                  onChange={async () => {
+                    setGuestCheckout(false);
+                    setEditing(true)
+                    await cancelIntent()
+                    setSecret(null)
+                  }}
+                  disabled={!!user}
+                />
+                <label htmlFor="No">Sign in to your account</label>
+              </div>
             </div>
 
             {guestCheckout ? (
@@ -267,6 +282,7 @@ const Page = () => {
                       name="firstName"
                       className="form_field w-full"
                       disabled={!isEditing}
+                      required
                     />
                   </div>
 
@@ -285,6 +301,7 @@ const Page = () => {
                       name="lastName"
                       className="form_field w-full"
                       disabled={!isEditing}
+                      required
                     />
                   </div>
                 </div>
@@ -301,6 +318,7 @@ const Page = () => {
                     name="email"
                     className="form_field w-full "
                     disabled={!isEditing}
+                    required
                   />
                 </div>
                 <span className="text-xs text-zinc-500">
@@ -309,9 +327,9 @@ const Page = () => {
                 </span>
                 <div className="flex gap-4 justify-end">
                   {isEditing ? (
-                    <button className="button">Continue</button>
+                    <button className="button">Continue to payment</button>
                   ) : (
-                    <button className="button">Edit</button>
+                    <button className="button">Edit details</button>
                   )}
                 </div>
               </form>
@@ -327,70 +345,72 @@ const Page = () => {
 
             {!guestCheckout && !user ? (
               <div>
-                <span>sign in to your account</span>
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
                   }}
                 >
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <div className="flex flex-col w-full">
-                      <label
-                        className="form_field_label w-full"
-                        htmlFor="email"
-                      >
-                        Username
-                      </label>
-                      <input
-                        value={loginData["username"]}
-                        onChange={handleLoginChange}
-                        type="text"
-                        name="username"
-                        className="form_field w-full"
-                      />
-                    </div>
+                  <div className="flex flex-col w-full gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <div className="flex flex-col w-full">
+                        <label
+                          className="form_field_label w-full"
+                          htmlFor="email"
+                        >
+                          Username
+                        </label>
+                        <input
+                          value={loginData["username"]}
+                          onChange={handleLoginChange}
+                          type="text"
+                          name="username"
+                          className="form_field w-full"
+                        />
+                      </div>
 
-                    {/* Last name */}
-                    <div className="flex flex-col w-full">
-                      <label
-                        className="form_field_label w-full"
-                        htmlFor="password"
-                      >
-                        password
-                      </label>
-                      <input
-                        value={loginData["password"]}
-                        onChange={handleLoginChange}
-                        type="password"
-                        name="password"
-                        className="form_field w-full"
-                      />
+                      <div className="flex flex-col w-full">
+                        <label
+                          className="form_field_label w-full"
+                          htmlFor="password"
+                        >
+                          Password
+                        </label>
+                        <input
+                          value={loginData["password"]}
+                          onChange={handleLoginChange}
+                          type="password"
+                          name="password"
+                          className="form_field w-full"
+                        />
+                      </div>
                     </div>
+                    <button onClick={handleLogin} className="button self-end">
+                      Log in
+                    </button>
                   </div>
-                  <button onClick={handleLogin}>sign in</button>
                 </form>
               </div>
             ) : null}
           </CheckoutFieldGroup>
 
+          <AnimatePresence initial={false}>
           {!isAuthLoading && secret ? (
-            <Elements
-              stripe={stripePromise}
-              options={options}
-              key={options.clientSecret}
-            >
-              <CheckoutPaymentForm
-                id="checkout"
-                orderData={orderData}
-                userDetails={userDetails}
-                setUserDetails={setUserDetails}
-                guestCheckout={guestCheckout}
-                setGuestCheckout={setGuestCheckout}
-              />
-            </Elements>
-          ) : (
-            <span>loading stripee</span>
-          )}
+              <Elements
+                stripe={stripePromise}
+                options={options}
+                key={options.clientSecret}
+              >
+                <CheckoutPaymentForm
+                  id="checkout"
+                  orderData={orderData}
+                  userDetails={userDetails}
+                  setUserDetails={setUserDetails}
+                  guestCheckout={guestCheckout}
+                  setGuestCheckout={setGuestCheckout}
+                />
+              </Elements>
+          ) : null}
+          </AnimatePresence>
         </div>
         <div className="flex flex-col gap-4 md:col-span-5">
           <CheckoutFieldGroup title="Your products">
@@ -400,7 +420,7 @@ const Page = () => {
               form="checkout"
             />
             <CheckoutTotals totalPrice={totalPrice}></CheckoutTotals>
-            <CheckoutPlaceOrderButton form="checkout" />
+            <CheckoutPlaceOrderButton form="checkout" secret={secret}/>
           </CheckoutFieldGroup>
         </div>
       </div>

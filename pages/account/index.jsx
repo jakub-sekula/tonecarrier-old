@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useAuth } from "../components/contexts/AuthContext";
+import { useAuth } from "../../components/contexts/AuthContext";
 import Image from "next/image";
-import InfoCard from "../components/InfoCard";
+import InfoCard from "../../components/InfoCard";
 
 const Account = () => {
   const router = useRouter();

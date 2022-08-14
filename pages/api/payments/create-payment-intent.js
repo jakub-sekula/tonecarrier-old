@@ -13,7 +13,6 @@ const handler = async (req, res) => {
     automatic_payment_methods: { enabled: true },
     receipt_email: email,
   });
-  console.log({paymentIntent})
   return res.status(201).json({
     client_secret: paymentIntent.client_secret,
     id: paymentIntent.id,

@@ -1,28 +1,28 @@
+import { motion } from "framer-motion";
+
 export const CheckoutFieldGroup = ({ children, title }) => {
   return (
-    <div className="flex flex-col gap-4">
+    <motion.div
+      className="flex flex-col gap-4"
+      initial={{ x: -50, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      exit={{ x: 50, opacity: 0 }}
+      key={title}
+    >
       <span className="font-cooper text-primary glow text-2xl">{title}</span>
       <div className="flex flex-col gap-4 p-6 border border-primary rounded-xl shadow-lg shadow-zinc-800">
         {children}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
-import { MdSecurity } from "react-icons/md";
-export const CheckoutPlaceOrderButton = ({ form }) => {
+export const CheckoutPlaceOrderButton = ({ form, secret }) => {
   return (
     <>
-      <button
-        type="submit"
-        form={form}
-        className="button"
-      >
+      <button type="submit" form={form} className="button" disabled={!secret}>
         Place order
       </button>
-      <span className="text-center flex  gap-2 items-center justify-center text-zinc-500">
-        <MdSecurity size={18} /> Secure payment with Stripe
-      </span>
     </>
   );
 };
@@ -59,7 +59,13 @@ export const CheckoutProducts = ({ products, ...props }) => {
             return <CheckoutLineItem product={product} key={product.key} />;
           })
         ) : (
-          <span>No items in cart</span>
+          <span>
+            {"No items in cart."}
+            <br></br>
+            <Link href="/products">
+              <a className="text-primary underline">Browse products here.</a>
+            </Link>
+          </span>
         )}
       </ul>
     </>
@@ -100,37 +106,31 @@ import {
 } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 import { useAuth } from "./contexts/AuthContext";
-import { useRouter } from "next/router";
+import { MdSecurity } from "react-icons/md";
 
-export const CheckoutPaymentForm = ({
-  userDetails,
-  orderData,
-  setUserDetails,
-  isEditing,
-  setEditing,
-  guestCheckout,
-  setGuestCheckout,
-}) => {
+export const CheckoutPaymentForm = ({ guestCheckout, setGuestCheckout }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState(null);
-  const [loginData, setLoginData] = useState({ username: "", password: "" });
-  const { setAuthLoading, user, logout, login } = useAuth();
-  const router = useRouter();
-
-  // console.log("userdetails", userDetails);
-  // console.log("user", user);
+  const { user } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!stripe || !elements) return;
 
+
+    const query = new URLSearchParams({
+      name: user?.name,
+      email: user?.email,
+      
+    })
+
     // confirm payment in Stripe
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: "http://localhost:3000/orders/processing",
+        return_url: `http://localhost:3000/orders/processing?${query}`,
       },
     });
 
@@ -140,13 +140,10 @@ export const CheckoutPaymentForm = ({
     }
   };
 
-  
-  
-
   useEffect(() => {
     setGuestCheckout(!user);
     console.log("!!user is ", !user);
-  }, [user]);
+  }, [user, setGuestCheckout]);
 
   useEffect(() => {
     console.log("guest checkout status changed: ", guestCheckout);
@@ -162,6 +159,9 @@ export const CheckoutPaymentForm = ({
         <CheckoutFieldGroup title="Payment details">
           <PaymentElement />
           {errorMessage && <div>{errorMessage}</div>}
+          <span className="text-center flex  gap-2 items-center justify-center text-zinc-500">
+            <MdSecurity size={18} /> Secure payment with Stripe
+          </span>
         </CheckoutFieldGroup>
       </form>
     </>

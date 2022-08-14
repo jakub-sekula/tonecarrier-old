@@ -51,14 +51,6 @@ const Header = (props) => {
           : null}
       </h1>
       <ul className="gap-4 flex flex-wrap">
-        {
-          //display home button if not on homepage
-          router.pathname !== "/" ? (
-            <Link href="/">
-              <a className="bg-slate-800 p-2 rounded-md text-white">Home</a>
-            </Link>
-          ) : null
-        }
         <Link href="/products">
           <a className="bg-slate-800 p-2 rounded-md text-white">Products</a>
         </Link>
@@ -83,7 +75,10 @@ const Header = (props) => {
         <button
           className="bg-slate-800 p-2 rounded-md text-white"
           onClick={clearCart}
-        > Clear cart </button>
+        >
+          {" "}
+          Clear cart{" "}
+        </button>
         {logOutButton()}
       </ul>
     </header>

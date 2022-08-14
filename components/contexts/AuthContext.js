@@ -1,6 +1,4 @@
-import { useRouter } from "next/router";
 import React, { createContext, useEffect, useState } from "react";
-import { checkRequestToken, validateToken } from "../../utils/wordpressApi";
 
 const AuthContext = createContext({
   auth: {},
@@ -13,25 +11,9 @@ const AuthContext = createContext({
   logout: () => {},
 });
 
-// not currently used
-export const getUser = async (context) => {
-  const token = checkRequestToken(context.req);
-
-  if (!token) return { status: "SIGNED_OUT", user: null };
-
-  const validate = await validateToken(token);
-
-  if (validate.statusCode === 200) {
-    return { status: "SIGNED_IN", user: validate.data };
-  } else {
-    return { status: "SIGNED_OUT", user: null };
-  }
-};
-
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({ status: "SIGNED_OUT", user: null });
   const [isAuthLoading, setAuthLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     const loadUserFromCookies = async () => {
@@ -50,7 +32,7 @@ export const AuthProvider = ({ children }) => {
           });
           // //clear cookie if bad token
           // return await logout();
-          return
+          return;
         }
 
         if (!json.user) {
@@ -61,7 +43,7 @@ export const AuthProvider = ({ children }) => {
           });
           // //clear cookie if bad token
           // return await logout();
-          return
+          return;
         }
 
         const { email: userEmail } = await getEmail();
@@ -170,15 +152,13 @@ export const AuthProvider = ({ children }) => {
       .then((res) => res.json())
       .then(() => {
         // setAuth({ status: "SIGNED_OUT", user: null });
-        setAuthLoading(true)
+        setAuthLoading(true);
         console.log("logging out!");
       })
       .catch((error) => {
         console.error("Error in logout function in authcontext: ", error);
       });
-    return 
-
-    ;
+    return;
   };
 
   // set an extra user variable for convenience (for now)

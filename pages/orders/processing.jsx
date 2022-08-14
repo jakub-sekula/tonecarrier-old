@@ -10,16 +10,31 @@ const ProcessingPage = () => {
   const { user, isAuthLoading } = useAuth();
   const { cartItems, clearCart } = useCart();
 
-  const { payment_intent_client_secret: secret, payment_intent: intentId } =
+  const { payment_intent_client_secret: secret, payment_intent: intentId, name, email } =
     router.query;
 
-  //   console.log(cartItems);
+    console.log("name is: ", name);
+
+  const clearLocalIntent = async () => {
+    try {
+      const { id } = JSON.parse(localStorage.getItem("payment_intent"));
+
+      localStorage.getItem("payment_intent")
+        ? localStorage.removeItem("payment_intent")
+        : null;
+
+        console.log(`Payment intent ${id} removed from local storage.`)
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // create order if everything is OK
   useEffect(() => {
     if (cartItems.length && !isAuthLoading) {
       const orderData = {
         customer_id: user?.id || 0,
+
         payment_method: "stripe",
         payment_method_title: "Card",
         set_paid: true,
@@ -32,6 +47,11 @@ const ProcessingPage = () => {
             value: intentId,
           },
         ],
+        billing: {
+          first_name: name.split(' ')[0],
+          last_name: name.split(' ')[1],
+          email: email
+        }
       };
 
       const createOrder = async () => {
@@ -50,12 +70,13 @@ const ProcessingPage = () => {
 
         const { orderNumber } = await order.json();
         console.log(`Order ${orderNumber} created!`);
-        clearCart()
-        router.push('/')
+        // clearCart();
+        // router.push("/");
       };
 
       try {
         createOrder();
+        clearLocalIntent();
       } catch (error) {
         console.log("error in processing.jsx: ", error);
         setError("error in creating order: ", error);
