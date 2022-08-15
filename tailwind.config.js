@@ -7,13 +7,13 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'cooper': ["'Cooper Black'", 'sans-serif'],
-        'sans': ['Poppins', 'sans-serif']  
+        cooper: ["'Cooper Black'", "sans-serif"],
+        sans: ["Poppins", "sans-serif"],
       },
       colors: {
-        'primary': '#EFAF23',
+        primary: "#EFAF23",
       },
     },
   },
   plugins: [],
-}
+};

@@ -65,7 +65,7 @@ const Page = () => {
     ) {
       console.log("checking local secret first...");
       const localPaymentIntent = JSON.parse(
-        localStorage.getItem("payment_intent")
+        sessionStorage.getItem("payment_intent")
       );
       console.log({ localPaymentIntent });
 
@@ -94,7 +94,7 @@ const Page = () => {
         const { client_secret, id } = await res.json();
 
         setSecret(client_secret);
-        localStorage.setItem(
+        sessionStorage.setItem(
           "payment_intent",
           JSON.stringify({ client_secret, id })
         );
@@ -174,7 +174,7 @@ const Page = () => {
       setEditing(true);
       setSecret(null);
       await cancelIntent();
-      localStorage.removeItem("payment_intent");
+      sessionStorage.removeItem("payment_intent");
       return;
     }
     setEditing(false);
@@ -182,18 +182,18 @@ const Page = () => {
 
   const cancelIntent = async () => {
     try {
-      const { id } = JSON.parse(localStorage.getItem("payment_intent"));
-
-      await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/payments/cancel-payment-intent?payment_intent_id=${id}`,
-        {
-          method: "POST",
-        }
-      );
-
-      localStorage.getItem("payment_intent")
-        ? localStorage.removeItem("payment_intent")
-        : null;
+      if (sessionStorage.getItem("payment_intent")) {
+        const { id } = JSON.parse(sessionStorage.getItem("payment_intent"));
+        await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/payments/cancel-payment-intent?payment_intent_id=${id}`,
+          {
+            method: "POST",
+          }
+        );
+        sessionStorage.removeItem("payment_intent");
+        console.log(`Payment intent ${id} removed from session storage.`);
+        return;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -212,7 +212,6 @@ const Page = () => {
           <CheckoutFieldGroup title="Your details">
             {/* Guest and login selector if user is not signed in */}
             <div
-            
               className={`${
                 user ? "hidden" : ""
               } flex gap-4 w-full mx-auto h-16 mb-4`}
@@ -252,9 +251,9 @@ const Page = () => {
                   name="guestCheckout"
                   onChange={async () => {
                     setGuestCheckout(false);
-                    setEditing(true)
-                    await cancelIntent()
-                    setSecret(null)
+                    setEditing(true);
+                    await cancelIntent();
+                    setSecret(null);
                   }}
                   disabled={!!user}
                 />
@@ -327,9 +326,11 @@ const Page = () => {
                 </span>
                 <div className="flex gap-4 justify-end">
                   {isEditing ? (
-                    <button className="button">Continue to payment</button>
+                    <button className="button self-end">
+                      Continue to payment
+                    </button>
                   ) : (
-                    <button className="button">Edit details</button>
+                    <button className="button self-end">Edit details</button>
                   )}
                 </div>
               </form>
@@ -384,7 +385,10 @@ const Page = () => {
                         />
                       </div>
                     </div>
-                    <button onClick={handleLogin} className="button self-end">
+                    <button
+                      onClick={handleLogin}
+                      className="button self-end"
+                    >
                       Log in
                     </button>
                   </div>
@@ -394,7 +398,7 @@ const Page = () => {
           </CheckoutFieldGroup>
 
           <AnimatePresence initial={false}>
-          {!isAuthLoading && secret ? (
+            {!isAuthLoading && secret ? (
               <Elements
                 stripe={stripePromise}
                 options={options}
@@ -409,7 +413,7 @@ const Page = () => {
                   setGuestCheckout={setGuestCheckout}
                 />
               </Elements>
-          ) : null}
+            ) : null}
           </AnimatePresence>
         </div>
         <div className="flex flex-col gap-4 md:col-span-5">
@@ -420,7 +424,7 @@ const Page = () => {
               form="checkout"
             />
             <CheckoutTotals totalPrice={totalPrice}></CheckoutTotals>
-            <CheckoutPlaceOrderButton form="checkout" secret={secret}/>
+            <CheckoutPlaceOrderButton form="checkout" secret={secret} />
           </CheckoutFieldGroup>
         </div>
       </div>

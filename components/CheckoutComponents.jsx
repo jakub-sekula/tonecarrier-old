@@ -20,7 +20,7 @@ export const CheckoutFieldGroup = ({ children, title }) => {
 export const CheckoutPlaceOrderButton = ({ form, secret }) => {
   return (
     <>
-      <button type="submit" form={form} className="button" disabled={!secret}>
+      <button type="submit" form={form} className="button self-end" disabled={!secret}>
         Place order
       </button>
     </>
@@ -108,7 +108,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "./contexts/AuthContext";
 import { MdSecurity } from "react-icons/md";
 
-export const CheckoutPaymentForm = ({ guestCheckout, setGuestCheckout }) => {
+export const CheckoutPaymentForm = ({ guestCheckout, setGuestCheckout, userDetails }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [errorMessage, setErrorMessage] = useState(null);
@@ -121,8 +121,8 @@ export const CheckoutPaymentForm = ({ guestCheckout, setGuestCheckout }) => {
 
 
     const query = new URLSearchParams({
-      name: user?.name,
-      email: user?.email,
+      name: user?.name || `${userDetails.firstName} ${userDetails.lastName}` || "Blank name",
+      email: user?.email || `${userDetails.email}` || "blankemail@mail.com",
       
     })
 

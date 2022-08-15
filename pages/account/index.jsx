@@ -76,6 +76,17 @@ const Account = () => {
                   <a>My orders</a>
                 </Link>
               </li>
+              <li className="flex gap-6 md:text-xl border-b border-zinc-500 py-4 hover:text-primary">
+                <Image
+                  src="/static/icons/Shopping_Cart_02.svg"
+                  fill="#ff0000"
+                  width={24}
+                  height={24}
+                ></Image>
+                <Link href="account/downloads">
+                  <a>My downloads</a>
+                </Link>
+              </li>
             </ul>
           </div>
 

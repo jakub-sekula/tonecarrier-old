@@ -9,15 +9,60 @@
 
 @font-face {
   font-family: "Poppins";
-  src: url("../public/static/fonts/Poppins-Regular.woff2");
+  font-style: normal;
+  font-weight: 400;
+  src: url("../public/static/fonts/Poppins/Poppins-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: italic;
+  font-weight: 400;
+  src: url("../public/static/fonts/Poppins/Poppins-Italic.ttf");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 300;
+  src: url("../public/static/fonts/Poppins/Poppins-Light.ttf");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: italic;
+  font-weight: 300;
+  src: url("../public/static/fonts/Poppins/Poppins-LightItalic.ttf");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  src: url("../public/static/fonts/Poppins/Poppins-SemiBold.ttf");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: italic;
+  font-weight: 600;
+  src: url("../public/static/fonts/Poppins/Poppins-SemiBoldItalic.ttf");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  src: url("../public/static/fonts/Poppins/Poppins-Bold.ttf");
+}
+@font-face {
+  font-family: "Poppins";
+  font-style: italic;
+  font-weight: 700;
+  src: url("../public/static/fonts/Poppins/Poppins-BoldItalic.ttf");
 }
 
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
   height: 100%;
 }
 
@@ -41,19 +86,22 @@ a {
 }
 
 .form_field {
-  @apply border-2 border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:bg-yellow-50 disabled:bg-zinc-100 disabled:text-zinc-400
+  @apply border-2 border-zinc-200 rounded-lg px-3 py-2 text-zinc-900 focus:bg-yellow-50 disabled:bg-zinc-100 disabled:text-zinc-400;
 }
 
 .form_field_label {
-  @apply font-sans text-yellow-500 text-sm font-bold mb-2
+  @apply font-sans text-yellow-500 text-sm font-bold mb-2;
 }
 
 .submit_button {
-  @apply bg-yellow-500 rounded-full w-full sm:w-max px-20 py-2 text-zinc-900
+  @apply bg-yellow-500 rounded-full w-full sm:w-max px-20 py-2 text-zinc-900;
 }
 
 .button {
-  @apply text-zinc-900 bg-primary rounded-md w-max px-6 py-2 self-end disabled:ring-1 ring-zinc-700
-          font-bold hover:brightness-95 active:scale-95 transition-all ease-out duration-100
-          disabled:bg-zinc-800 disabled:active:scale-100 disabled:hover:brightness-100 disabled:select-none disabled:text-zinc-700
+  @apply text-zinc-900 ring-zinc-700 bg-primary 
+          rounded-md w-max px-6 py-2 font-semibold
+          transition-all ease-out duration-100
+          disabled:ring-1  disabled:bg-zinc-800 disabled:active:scale-100
+            disabled:hover:brightness-100 disabled:select-none disabled:text-zinc-700
+          hover:brightness-95 active:scale-95  active:brightness-75;
 }

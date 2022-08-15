@@ -39,11 +39,11 @@ const handler = async (req, res) => {
       req.query.payment_intent
     );
 
-    console.log("order.js ", { status, client_secret });
+    console.log("Status of payment intent checked in order.js: ", { status, client_secret });
 
     const orderData = req.body;
 
-    if (status !== "succeeded") return res.status(400).json(newOrder.data);
+    if (status !== "succeeded") return res.status(400).json(status);
 
     const newOrder = await createWoocommerceOrder(orderData);
 

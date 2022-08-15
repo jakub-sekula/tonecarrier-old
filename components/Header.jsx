@@ -72,6 +72,9 @@ const Header = (props) => {
         <Link href="/checkout">
           <a className="bg-slate-800 p-2 rounded-md text-white">Checkout</a>
         </Link>
+        <Link href="/testing">
+          <a className="bg-slate-800 p-2 rounded-md text-white">Testing</a>
+        </Link>
         <button
           className="bg-slate-800 p-2 rounded-md text-white"
           onClick={clearCart}

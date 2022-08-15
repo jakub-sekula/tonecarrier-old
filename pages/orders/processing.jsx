@@ -1,29 +1,36 @@
 import { create } from "domain";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { MoonLoader } from "react-spinners";
 import { useAuth } from "../../components/contexts/AuthContext";
 import { useCart } from "../../components/contexts/CartContext";
 
-const ProcessingPage = () => {
+const ProcessingPage = ({ query }) => {
   const router = useRouter();
   const [error, setError] = useState("");
   const { user, isAuthLoading } = useAuth();
   const { cartItems, clearCart } = useCart();
+  const [success, setSuccess] = useState(false);
 
-  const { payment_intent_client_secret: secret, payment_intent: intentId, name, email } =
-    router.query;
+  const {
+    payment_intent_client_secret: secret,
+    payment_intent: intentId,
+    name,
+    email,
+  } = query;
 
-    console.log("name is: ", name);
+  console.log("name is: ", name);
+  console.log("processing router query: ", query);
 
   const clearLocalIntent = async () => {
     try {
-      const { id } = JSON.parse(localStorage.getItem("payment_intent"));
-
-      localStorage.getItem("payment_intent")
-        ? localStorage.removeItem("payment_intent")
-        : null;
-
-        console.log(`Payment intent ${id} removed from local storage.`)
+      if (sessionStorage.getItem("payment_intent")) {
+        const { id } = JSON.parse(sessionStorage.getItem("payment_intent"));
+        sessionStorage.removeItem("payment_intent");
+        console.log(`Payment intent ${id} removed from session storage.`);
+        return;
+      }
+      return console.log("No local payment intent to remove");
     } catch (error) {
       console.log(error);
     }
@@ -32,6 +39,7 @@ const ProcessingPage = () => {
   // create order if everything is OK
   useEffect(() => {
     if (cartItems.length && !isAuthLoading) {
+      console.log("generating order data kurwo");
       const orderData = {
         customer_id: user?.id || 0,
 
@@ -48,11 +56,13 @@ const ProcessingPage = () => {
           },
         ],
         billing: {
-          first_name: name.split(' ')[0],
-          last_name: name.split(' ')[1],
-          email: email
-        }
+          first_name: name?.split(" ")[0] || "first name",
+          last_name: name?.split(" ")[1] || "last name",
+          email: email || "email",
+        },
       };
+
+      console.log({ orderData });
 
       const createOrder = async () => {
         const order = await fetch(
@@ -72,6 +82,8 @@ const ProcessingPage = () => {
         console.log(`Order ${orderNumber} created!`);
         // clearCart();
         // router.push("/");
+        // router.reload(router.pathname)
+        setSuccess(true);
       };
 
       try {
@@ -93,8 +105,22 @@ const ProcessingPage = () => {
         {/* Payment intent: {JSON.stringify(status, null, "\t")} */}
         {error}
       </pre>
+      {success ? <span>order successul!</span> : <MoonLoader color="#ffffff"/>}
     </div>
   );
 };
 
 export default ProcessingPage;
+
+export const getServerSideProps = async (ctx) => {
+  /* 
+    Passing query as props so that is is available on first render
+    When I used useRouter(), the query returned undefined on initial render
+    which was fucking up the order processing sequence.
+  */
+  return {
+    props: {
+      query: ctx.query,
+    },
+  };
+};

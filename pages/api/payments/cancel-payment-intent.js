@@ -11,7 +11,7 @@ const handler = async (req, res) => {
     .cancel(payment_intent_id)
     .catch((error) => {
       console.log(error);
-      return res.status(400).send()
+      return res.status(400).send(error)
     });
     console.log(`Payment intent ${payment_intent_id} cancelled.`)
   return res.status(200).send("Cancelled")
