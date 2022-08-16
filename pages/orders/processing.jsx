@@ -1,9 +1,9 @@
-import { create } from "domain";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { MoonLoader } from "react-spinners";
 import { useAuth } from "../../components/contexts/AuthContext";
 import { useCart } from "../../components/contexts/CartContext";
+import OrderProcessingSpinner from "../../components/OrderProcessingSpinner";
+import OrderSummary from "../../components/OrderSummary";
 
 const ProcessingPage = ({ query }) => {
   const router = useRouter();
@@ -11,6 +11,7 @@ const ProcessingPage = ({ query }) => {
   const { user, isAuthLoading } = useAuth();
   const { cartItems, clearCart } = useCart();
   const [success, setSuccess] = useState(false);
+  const [data, setData] = useState({})
 
   const {
     payment_intent_client_secret: secret,
@@ -18,9 +19,6 @@ const ProcessingPage = ({ query }) => {
     name,
     email,
   } = query;
-
-  console.log("name is: ", name);
-  console.log("processing router query: ", query);
 
   const clearLocalIntent = async () => {
     try {
@@ -62,7 +60,7 @@ const ProcessingPage = ({ query }) => {
         },
       };
 
-      console.log({ orderData });
+      // console.log(JSON.stringify(orderData));
 
       const createOrder = async () => {
         const order = await fetch(
@@ -78,8 +76,12 @@ const ProcessingPage = ({ query }) => {
           return console.log("zesrało się (processing.jsx)", order.statusText);
         }
 
-        const { orderNumber } = await order.json();
-        console.log(`Order ${orderNumber} created!`);
+        const orderResponse = await order.json();
+
+        console.log(orderResponse.downloads)
+
+        setData(orderResponse);
+
         // clearCart();
         // router.push("/");
         // router.reload(router.pathname)
@@ -96,8 +98,14 @@ const ProcessingPage = ({ query }) => {
     }
   }, [secret, cartItems, isAuthLoading]);
 
+
   return (
     <div>
+      {success ? (
+        <OrderSummary data={data} cart={cartItems} />
+      ) : (
+        <OrderProcessingSpinner />
+      )}
       <h1>Information about order status:</h1>
       {/* <h1>Sequential ID: {sequentialId}</h1> */}
       <pre className="text-xs break-words">
@@ -105,7 +113,6 @@ const ProcessingPage = ({ query }) => {
         {/* Payment intent: {JSON.stringify(status, null, "\t")} */}
         {error}
       </pre>
-      {success ? <span>order successul!</span> : <MoonLoader color="#ffffff"/>}
     </div>
   );
 };

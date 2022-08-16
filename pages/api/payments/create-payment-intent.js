@@ -2,7 +2,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const handler = async (req, res) => {
   const body = JSON.parse(req.body);
-  const { price, email } = body;
+  const { price, email} = body;
 
   console.log("email in payment intent api: ", email)
   if (!email) return res.status(400).send()

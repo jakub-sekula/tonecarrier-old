@@ -1,5 +1,6 @@
 import {
   createWoocommerceOrder,
+  getDownloadLinks,
   retrieveProductById,
 } from "../../utils/wooCommerceApi";
 
@@ -35,23 +36,65 @@ const handler = async (req, res) => {
   }
 
   try {
-    const { status, client_secret } = await stripe.paymentIntents.retrieve(
+    const paymentIntent = await stripe.paymentIntents.retrieve(
       req.query.payment_intent
     );
 
-    console.log("Status of payment intent checked in order.js: ", { status, client_secret });
+    const { status, client_secret, charges, amount, currency } = paymentIntent;
+    const { receipt_url } = charges.data[0];
+    const { last4, brand } = charges.data[0].payment_method_details.card;
+
+    console.log("Status of payment intent checked in order.js: ", {
+      status,
+      client_secret,
+    });
 
     const orderData = req.body;
 
     if (status !== "succeeded") return res.status(400).json(status);
 
-    const newOrder = await createWoocommerceOrder(orderData);
+    const newOrder = await createWoocommerceOrder(orderData).catch((err) =>
+      console.error(err)
+    );
 
     const orderNumber = newOrder.meta_data.find(
       (obj) => obj.key === "_order_number"
     ).value;
 
-    return res.status(201).json({message: "Order created", orderNumber: orderNumber});
+    await stripe.paymentIntents
+      .update(req.query.payment_intent, {
+        metadata: { order_id: newOrder.id, orderNumber: orderNumber },
+      })
+      .catch((err) => console.log(err));
+
+
+    const downloads = await getDownloadLinks(newOrder.customer_id).then(
+      (res) => {
+        return res.filter((order) => order.order_id === newOrder.id);
+      }
+    );
+    console.log("downloads: ", downloads);
+
+
+    return res.status(201).json({
+      message: "Order created",
+      order_number: orderNumber,
+      id: newOrder.id,
+      downloads: downloads[0].links,
+      payment: {
+        amount,
+        currency,
+        status,
+        brand,
+        last4,
+        receipt_url,
+      },
+      billing: {
+        firstName: newOrder.billing.first_name,
+        lastName: newOrder.billing.last_name,
+        email: newOrder.billing.email
+      }
+    });
   } catch (error) {
     console.log("error in order.js ", error);
     return res.status(500).json("Internal server error");

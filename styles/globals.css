@@ -105,3 +105,13 @@ a {
             disabled:hover:brightness-100 disabled:select-none disabled:text-zinc-700
           hover:brightness-95 active:scale-95  active:brightness-75;
 }
+
+.button-secondary {
+  @apply text-primary ring-zinc-700 border border-primary
+          rounded-md w-max px-6 py-2 font-semibold
+          transition-all ease-out duration-100
+          disabled:ring-1  disabled:bg-zinc-800 disabled:active:scale-100
+          disabled:hover:brightness-100 disabled:select-none disabled:text-zinc-700
+          hover:bg-zinc-800 active:scale-95  active:brightness-75;
+}
+

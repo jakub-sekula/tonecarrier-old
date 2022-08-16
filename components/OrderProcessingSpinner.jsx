@@ -1,6 +1,5 @@
 import { MoonLoader } from "react-spinners";
 
-
 const OrderProcessingSpinner = () => {
   return (
     <div className="mx-auto gap-8 w-full sm:w-max border border-primary rounded-lg flex flex-col items-center p-4 ">
@@ -10,10 +9,12 @@ const OrderProcessingSpinner = () => {
         <h1 className="font-cooper text-primary glow text-2xl">
           Processing your order...
         </h1>
-        <span className="text-sm text-zinc-400">Any moment now...</span>
+        <span className="text-sm text-zinc-400">
+          Please don't leave this page until we have confirmed your order.
+        </span>
       </div>
     </div>
   );
 };
 
-export default OrderProcessingSpinner
+export default OrderProcessingSpinner;
