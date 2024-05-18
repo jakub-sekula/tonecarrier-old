@@ -121,6 +121,16 @@ function PhotoComponent({ photo }: { photo: Photo }) {
 }
 
 export default function Gallery() {
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href =
+      "https://drive.google.com/uc?export=download&id=1cq9CTjuOxqgc-QBut336i7w-NT8epj-g";
+    link.setAttribute("download", "file.zip"); // You can specify the file name here
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <section className="relative pb-12">
       {/* <div className="bg-gray-900 absolute left-0 right-0 top-0 h-[30rem]" /> */}
@@ -135,16 +145,19 @@ export default function Gallery() {
             Download one of our example files in RAW format
             <br /> and see for yourself the quality of camera scanned film.
           </p>
-          {/* <div
+          <div
             className="mx-auto sm:max-w-none sm:flex sm:justify-center"
             data-aos="zoom-y-out"
             data-aos-delay="300"
           >
-            <button className="w-full px-4 py-2 rounded border-gray-900 border hover:bg-gray-900/20 text-gray-900 flex justify-center items-center gap-2 mt-8">
-          <Download className="size-4" />
-          Download ZIP
-        </button>
-          </div> */}
+            <button
+              onClick={handleDownload}
+              className="w-full px-4 py-2 rounded border-gray-900 border hover:bg-gray-900/20 text-gray-900 flex justify-center items-center gap-2 mt-8"
+            >
+              <Download className="size-4" />
+              Download ZIP (145 MB)
+            </button>
+          </div>
         </div>
       </div>
       <Carousel
