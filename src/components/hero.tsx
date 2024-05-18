@@ -14,17 +14,18 @@ export default function Hero() {
     }
   }, []);
   return (
-    <section className="relative bg-neutral-500">
+    <section className="relative">
       {/* Illustration behind hero content */}
       <video
         ref={ref}
         src="/leaks_trim.mp4"
-        className="absolute w-full h-full object-cover mix-blend-multiply"
+        className="absolute w-full h-full object-cover mix-blend-multiply -z-10 "
         autoPlay
         loop
         muted
         playsInline
       ></video>
+      <div className="absolute w-full h-full bg-gray-500 -z-20" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 text-white">
         {/* Hero content */}
