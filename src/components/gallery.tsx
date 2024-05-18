@@ -3,6 +3,15 @@ import clsx from "clsx";
 import { Camera, Download, Film, SunMedium } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
+import Autoplay from "embla-carousel-autoplay";
+
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "./ui/carousel";
 
 type Photo = {
   name: string;
@@ -75,11 +84,11 @@ function PhotoComponent({ photo }: { photo: Photo }) {
   return (
     <div
       className={clsx(
-        "hover:scale-[102.5%] hover:shadow-xl transition-all duration-200",
-        "aspect-[3/2] shrink-0 h-64 rounded overflow-hidden group relative"
+        "md:hover:scale-[102.5%] md:hover:shadow-xl transition-all duration-200",
+        " w-full shrink-0 h-full md:rounded overflow-hidden group relative"
       )}
     >
-      <div className="group-hover:opacity-100 bg-black/50 backdrop-blur-sm transition-all duration-200 absolute inset-0 opacity-0 text-white p-6 flex flex-col gap-4">
+      <div className="md:group-hover:opacity-100 bg-black/50 backdrop-blur-sm transition-all duration-200 absolute inset-0 opacity-0 text-white p-6 flex flex-col gap-4">
         <div className="flex items-center gap-2">
           <Camera className="size-5 text-white/75" />
           <span>{photo.camera}</span>
@@ -112,45 +121,6 @@ function PhotoComponent({ photo }: { photo: Photo }) {
 }
 
 export default function Gallery() {
-  const photos = [...initialPhotos, ...initialPhotos]; // Duplicate photos for seamless scrolling
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const container = containerRef.current;
-
-    const handleMouseEnter = () => {
-      if (container) {
-        container.classList.add("paused");
-      }
-    };
-
-    const handleMouseLeave = () => {
-      if (container) {
-        container.classList.remove("paused");
-      }
-    };
-
-    const handleScroll = () => {
-      if (container) {
-        container.classList.add("paused");
-      }
-    };
-
-    if (container) {
-      container.addEventListener("mouseenter", handleMouseEnter);
-      container.addEventListener("mouseleave", handleMouseLeave);
-      container.addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (container) {
-        container.removeEventListener("mouseenter", handleMouseEnter);
-        container.removeEventListener("mouseleave", handleMouseLeave);
-        container.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
-
   return (
     <section className="relative pb-12">
       {/* <div className="bg-gray-900 absolute left-0 right-0 top-0 h-[30rem]" /> */}
@@ -177,16 +147,30 @@ export default function Gallery() {
           </div> */}
         </div>
       </div>
-      <div
-        className="relative mx-auto px-4 sm:px-6 py-10 overflow-hidden"
-        ref={containerRef}
+      <Carousel
+        plugins={[
+          Autoplay({
+            delay: 3500,
+          }),
+        ]}
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+        className="w-full mx-auto flex items-center justify-center -px-8"
+        data-aos="zoom-y-out"
       >
-        <div className="flex gap-6 animate-scroll">
-          {photos.map((photo, index) => (
-            <PhotoComponent photo={photo} key={index} />
+        <CarouselContent className="-ml-4 ">
+          {initialPhotos.map((photo, index) => (
+            <CarouselItem
+              className="md:basis-1/2 lg:basis-1/4 pl-4 aspect-[3/2] "
+              key={index}
+            >
+              <PhotoComponent photo={photo} />
+            </CarouselItem>
           ))}
-        </div>
-      </div>
+        </CarouselContent>
+      </Carousel>
       <style jsx>{`
         @keyframes scroll {
           0% {
