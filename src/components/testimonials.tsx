@@ -69,7 +69,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="relative">
+    <section className="relative" id="reviews">
       {/* Illustration behind content */}
       <div
         className="absolute left-1/2 transform -translate-x-1/2 bottom-0 pointer-events-none -mb-32"
@@ -106,11 +106,11 @@ export default function Testimonials() {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="py-12 md:py-20">
+        <div className="pb-12 md:pb-20">
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
-            <h2 className="h2 mb-4">Perfect customer satisfaction</h2>
-            <p className="text-xl text-gray-600" data-aos="zoom-y-out">
+            <h2 className="h2 mb-4">Customer stories</h2>
+            <p className="text-lg md:text-xl text-gray-600" data-aos="zoom-y-out">
               All reviews are from verified buyers in our Etsy store.
             </p>
           </div>
@@ -143,15 +143,15 @@ export default function Testimonials() {
                           .map((_, index) => (
                             <Star
                               key={index}
-                              className="fill-amber-500 stroke-none size-8"
+                              className="fill-amber-500 stroke-none size-6 md:size-8"
                             />
                           ))}
-                        <span className="ml-auto text-gray-400">
+                        <span className="text-sm md:text-base ml-auto text-gray-400">
                           {testimonial.date}
                         </span>
                       </div>
 
-                      <blockquote className="text-lg mb-auto">
+                      <blockquote className="md:text-lg mb-auto">
                         {testimonial.content}
                         <span className="md:block text-sm text-gray-500 mt-2 hidden font-light">
                           Product:{" "}
@@ -164,7 +164,7 @@ export default function Testimonials() {
                         </span>
                       </blockquote>
                       <div className="flex gap-2 md:items-center mt-6 justify-between w-full md:flex-row flex-col">
-                        <cite className="block text-lg not-italic">
+                        <cite className="block md:text-lg not-italic">
                           Reviewed by{" "}
                           <span className="font-bold ">
                             {testimonial.author}

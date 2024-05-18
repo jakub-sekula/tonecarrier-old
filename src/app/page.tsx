@@ -30,10 +30,10 @@ export default function Home() {
         <Hero />
         {/* <FeaturesBlocks /> */}
         <Gallery />
-        {/* <Features /> */}
+        <Features />
         <Testimonials />
-        {/* <Newsletter /> */}
         {/* <Faq /> */}
+        {/* <Newsletter /> */}
       </main>
     </>
   );

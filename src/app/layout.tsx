@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 
 import Header from '@/components/ui/header'
 import Banner from '@/components/banner'
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -32,6 +32,7 @@ export default function RootLayout({
         </div>
       </body>
       <GoogleAnalytics gaId="G-MBMWQ5ED7P" />
+      <GoogleTagManager gtmId="GTM-WN6VB42T" />
     </html>
   )
 }

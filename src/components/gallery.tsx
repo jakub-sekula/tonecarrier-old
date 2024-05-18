@@ -85,7 +85,7 @@ function PhotoComponent({ photo }: { photo: Photo }) {
     <div
       className={clsx(
         "md:hover:scale-[102.5%] md:hover:shadow-xl transition-all duration-200",
-        " w-full shrink-0 h-full md:rounded overflow-hidden group relative"
+        " w-full shrink-0 md:h-full md:rounded overflow-hidden group relative  md:aspect-[3/2] border md:border-none"
       )}
     >
       <div className="md:group-hover:opacity-100 bg-black/50 backdrop-blur-sm transition-all duration-200 absolute inset-0 opacity-0 text-white p-6 flex flex-col gap-4">
@@ -114,25 +114,32 @@ function PhotoComponent({ photo }: { photo: Photo }) {
         height={267}
         src={photo.image}
         alt={photo.name}
-        className="w-full h-full object-cover"
+        className="w-full md:h-full object-cover"
       />
+      <div className="p-6 flex flex-col gap-2 md:hidden">
+        <div className="flex items-center gap-2">
+          <Camera className="size-5" />
+          <span>{photo.camera}</span>
+        </div>
+        {photo.film ? (
+          <div className="flex items-center gap-2">
+            <Film className="size-5" />
+            <span>{photo.film}</span>
+          </div>
+        ) : null}
+
+        <div className="flex items-center gap-2">
+          <SunMedium className="size-5" />
+          <span>{photo.light}</span>
+        </div>
+      </div>
     </div>
   );
 }
 
 export default function Gallery() {
-  const handleDownload = () => {
-    const link = document.createElement("a");
-    link.href =
-      "https://drive.google.com/uc?export=download&id=1cq9CTjuOxqgc-QBut336i7w-NT8epj-g";
-    link.setAttribute("download", "file.zip"); // You can specify the file name here
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   return (
-    <section className="relative pb-12">
+    <section className="relative pb-12" id="samples">
       {/* <div className="bg-gray-900 absolute left-0 right-0 top-0 h-[30rem]" /> */}
       <div
         className="relative max-w-6xl mx-auto px-4 sm:px-6  pt-24"
@@ -140,8 +147,8 @@ export default function Gallery() {
       >
         {/* Section header */}
         <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16 flex flex-col gap-4">
-          <h1 className="h2">Sample scans</h1>
-          <p className="text-xl text-gray-800">
+          <h2 className="h2">Sample scans</h2>
+          <p className="text-lg md:text-xl text-gray-600" >
             Download a few of our example files in RAW (DNG) format.
           </p>
           <div
@@ -149,40 +156,43 @@ export default function Gallery() {
             data-aos="zoom-y-out"
             data-aos-delay="300"
           >
-            <button
-              onClick={handleDownload}
+            <a
+              href="https://mega.nz/file/6XoH3QBD#c8nWI30F2vgC28vI4fEsG7vpXjj8RMaz6NFHLLFYd6U"
+              target="_blank"
               className="w-full px-4 py-2 rounded border-gray-900 border hover:bg-gray-900/20 text-gray-900 flex justify-center items-center gap-2 mt-8"
             >
               <Download className="size-4" />
               Download ZIP (145 MB)
-            </button>
+            </a>
           </div>
         </div>
       </div>
-      <Carousel
-        plugins={[
-          Autoplay({
-            delay: 3500,
-          }),
-        ]}
-        opts={{
-          align: "start",
-          loop: true,
-        }}
-        className="w-full mx-auto flex items-center justify-center -px-8"
-        data-aos="zoom-y-out"
-      >
-        <CarouselContent className="-ml-4 ">
-          {initialPhotos.map((photo, index) => (
-            <CarouselItem
-              className="md:basis-1/2 lg:basis-1/4 pl-4 aspect-[3/2] "
-              key={index}
-            >
-              <PhotoComponent photo={photo} />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
+      <div className="w-full px-4 md:p-0">
+        <Carousel
+          plugins={[
+            Autoplay({
+              delay: 3500,
+            }),
+          ]}
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full mx-auto flex items-center justify-center -px-8"
+          data-aos="zoom-y-out"
+        >
+          <CarouselContent className="-ml-4">
+            {initialPhotos.map((photo, index) => (
+              <CarouselItem
+                className="md:basis-1/2 lg:basis-1/4 2xl:basis-1/5 pl-4 "
+                key={index}
+              >
+                <PhotoComponent photo={photo} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
       <style jsx>{`
         @keyframes scroll {
           0% {

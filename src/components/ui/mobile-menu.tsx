@@ -74,13 +74,54 @@ export default function MobileMenu() {
           leaveTo="opacity-0"
         >
           <div className="p-6">
-
-          <a
-            className="btn text-white bg-orange-500 hover:bg-orange-600 w-full sm:w-auto mb-4 whitespace-nowrap sm:mb-0 flex items-center justify-center gap-1"
-            href="https://theprintedphotolab.etsy.com"
-          >
-            Buy on <EtsyLogo className="fill-white h-6 pt-1" />
-          </a>
+            <nav>
+              <ul className="flex flex-col gap-4">
+                <li>
+                  <a
+                    onClick={() => setMobileNavOpen(false)}
+                    className="text-lg  w-full sm:w-auto mb-4 whitespace-nowrap sm:mb-0 flex items-center justify-center gap-1"
+                    href="#features"
+                  >
+                    Features
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={() => setMobileNavOpen(false)}
+                    className="text-lg  w-full sm:w-auto mb-4 whitespace-nowrap sm:mb-0 flex items-center justify-center gap-1"
+                    href="#samples"
+                  >
+                    Sample scans
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={() => setMobileNavOpen(false)}
+                    className="text-lg  w-full sm:w-auto mb-4 whitespace-nowrap sm:mb-0 flex items-center justify-center gap-1"
+                    href="#reviews"
+                  >
+                    Reviews
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={() => setMobileNavOpen(false)}
+                    className="text-lg  w-full sm:w-auto mb-4 whitespace-nowrap sm:mb-0 flex items-center justify-center gap-1"
+                    href="#faq"
+                  >
+                    FAQ
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="btn text-white bg-orange-500 hover:bg-orange-600 w-full sm:w-auto mb-4 whitespace-nowrap sm:mb-0 flex items-center justify-center gap-1"
+                    href="https://theprintedphotolab.etsy.com"
+                  >
+                    Buy on <EtsyLogo className="fill-white h-6 pt-1" />
+                  </a>
+                </li>
+              </ul>
+            </nav>
           </div>
         </Transition>
       </div>
