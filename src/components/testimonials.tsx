@@ -21,7 +21,7 @@ const testimonials = [
       "Great quality and well designed item! Definitely exceeded my expectations. Communication was excellent, and item arrived quickly and well packaged. Would purchase again",
     productImage: "/images/135-ready-to-use.jpg",
     productName: "toneCarrier 35 mm",
-    productLink: "#",
+    productLink: "https://www.etsy.com/uk/listing/1592266480/tonecarrier-35-mm-film-holder-for-dslr",
   },
   {
     date: "Apr 5, 2024",
@@ -32,7 +32,7 @@ const testimonials = [
     productImage: "/images/135-diy.jpg",
     reviewImage: "/images/reviews/vincent.jpg",
     productName: "toneCarrier 35 mm (DIY version)",
-    productLink: "#",
+    productLink: "https://www.etsy.com/uk/listing/1155028597/tonecarrier-35-mm-film-holder-for-dslr",
   },
   {
     date: "Mar 31, 2024",
@@ -40,10 +40,10 @@ const testimonials = [
     stars: 5,
     content:
       "These carriers are heavy, dense, and incredibly stiff. A deep s-curve helps keep the film very flat. At f/11 a whole 6x6cm frame was in focus. This combined with a throughtful design makes this a 10/10 product.",
-    productImage: "/images/135-diy.jpg",
+    productImage: "/images/135-ready-to-use.jpg",
     reviewImage: "/images/reviews/andrew.jpg",
     productName: "toneCarrier 35 mm",
-    productLink: "#",
+    productLink: "https://www.etsy.com/uk/listing/1592266480/tonecarrier-35-mm-film-holder-for-dslr",
   },
   {
     date: "Feb 15, 2024",
@@ -53,7 +53,7 @@ const testimonials = [
       "Beautifully constructed and thought out. Seller was kind, helpful and threw in extra accessories for me to use! Sellers like this are why I am grateful etsy exists.",
     productImage: "/images/135-ready-to-use.jpg",
     productName: "toneCarrier 35 mm",
-    productLink: "#",
+    productLink: "https://www.etsy.com/uk/listing/1592266480/tonecarrier-35-mm-film-holder-for-dslr",
   },
   {
     date: "Mar 17, 2024",
@@ -63,7 +63,7 @@ const testimonials = [
     productImage: "/images/120-diy.jpg",
     reviewImage: "/images/reviews/mike.jpg",
     productName: "toneCarrier 120 (DIY version)",
-    productLink: "#",
+    productLink: "https://www.etsy.com/uk/listing/1595409438/tonecarrier-120-film-holder-for-dslr",
   },
 ];
 
