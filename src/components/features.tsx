@@ -126,8 +126,10 @@ export default function Features() {
                       <video
                         // ref={firstVideoRef}
                         className="md:max-w-none w-full h-full mx-auto object-cover"
-                        src={"/videos/push-pull.mp4"}
+                        src={"/videos/push-pull.mp4#t=0.5"}
+                        preload="metadata"
                         autoPlay
+                        playsInline
                         muted
                         loop
                       />
@@ -150,9 +152,11 @@ export default function Features() {
                     <div className="relative inline-flex flex-col aspect-square md:aspect-[5/4] rounded shadow-sm overflow-hidden">
                       <video
                         className="md:max-w-none w-full h-full mx-auto object-cover"
-                        src={"/videos/knob-turn.mp4"}
+                        src={"/videos/knob-turn.mp4#t=0.5"}
+                        preload="metadata"
                         autoPlay
                         muted
+                        playsInline
                         loop
                       />
                     </div>
@@ -174,8 +178,10 @@ export default function Features() {
                     <div className="relative inline-flex flex-col aspect-square md:aspect-[5/4] rounded shadow-sm overflow-hidden">
                       <video
                         className="md:max-w-none w-full h-full mx-auto object-cover"
-                        src={"/videos/phone-adapter-2.mp4"}
+                        src={"/videos/phone-adapter-2.mp4#t=0.5"}
+                        preload="metadata"
                         autoPlay
+                        playsInline
                         muted
                         loop
                       />
