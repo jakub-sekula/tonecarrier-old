@@ -142,8 +142,7 @@ export default function Gallery() {
         <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16 flex flex-col gap-4">
           <h1 className="h2">Sample scans</h1>
           <p className="text-xl text-gray-800">
-            Download one of our example files in RAW format
-            <br /> and see for yourself the quality of camera scanned film.
+            Download a few of our example files in RAW (DNG) format.
           </p>
           <div
             className="mx-auto sm:max-w-none sm:flex sm:justify-center"
