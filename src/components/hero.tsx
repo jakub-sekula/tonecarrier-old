@@ -63,12 +63,12 @@ export default function Hero() {
                 >
                   Buy on <EtsyLogo className="fill-white h-6 pt-1" />
                 </a>
-                <a
+                {/* <a
                   className="btn text-white bg-gray-900 hover:bg-gray-800 w-full sm:w-auto sm:ml-4"
                   href="#0"
                 >
                   Learn more
-                </a>
+                </a> */}
               </div>
             </div>
           </div>

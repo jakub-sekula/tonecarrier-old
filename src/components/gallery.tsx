@@ -95,10 +95,10 @@ function PhotoComponent({ photo }: { photo: Photo }) {
           <SunMedium className="size-5 text-white/75" />
           <span>{photo.light}</span>
         </div>
-        <button className="w-full mt-auto py-2 rounded border-white border bg-white/10 hover:bg-white/70 hover:border-transparent text-white flex justify-center items-center gap-2">
+        {/* <button className="w-full mt-auto py-2 rounded border-white border bg-white/10 hover:bg-white/70 hover:border-transparent text-white flex justify-center items-center gap-2">
           <Download className="size-4" />
           Download RAW
-        </button>
+        </button> */}
       </div>
       <Image
         width={400}
