@@ -102,7 +102,7 @@ function PhotoComponent({ photo }: { photo: Photo }) {
       onClick={() => setInvert((prev) => !prev)}
       className={clsx(
         "group md:hover:shadow-xl transition-all duration-200",
-        " w-full shrink-0 md:h-full md:rounded overflow-hidden group relative  md:aspect-[3/2] border md:border-none"
+        " w-full shrink-0 md:h-full rounded overflow-hidden group relative  md:aspect-[3/2] border md:border-none"
       )}
     >
       <div className="md:group-hover:opacity-100 bg-black/20 border border-white/20 shadow-xl backdrop-blur-md z-50 ransition-all duration-200 absolute  top-4 left-4 opacity-0 text-white px-3 py-2 rounded flex flex-col gap-0 text-sm">
@@ -159,21 +159,15 @@ export default function Gallery() {
         data-aos="zoom-y-out"
       >
         {/* Section header */}
-        <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16 flex flex-col gap-4">
+        <div className="max-w-3xl mx-auto text-center pb-8 md:pb-16 flex flex-col gap-4">
           <h2 className="h2">Sample scans</h2>
           <p className="text-lg md:text-xl text-gray-600">
             Download a few of our example files in RAW (DNG) format.
           </p>
-          <div className="flex text-gray-600 mx-auto gap-1 items-center ">
-            <span className="inline-flex gap-1 font-bold items-center">
-            <MousePointerClick className="size-6" />Click
-            </span>{" "}
-            on any image to view the original negative.
-          </div>
           <div
             className="mx-auto sm:max-w-none sm:flex sm:justify-center"
             data-aos="zoom-y-out"
-            data-aos-delay="300"
+            data-aos-delay="600"
           >
             <a
               href="https://mega.nz/file/6XoH3QBD#c8nWI30F2vgC28vI4fEsG7vpXjj8RMaz6NFHLLFYd6U"
@@ -183,6 +177,13 @@ export default function Gallery() {
               <Download className="size-4" />
               Download ZIP (145 MB)
             </a>
+          </div>
+          <div data-aos="zoom-y-out"
+            data-aos-delay="300" className=" mt-8 w-full md:w-auto flex flex-col md:flex-row bg-gray-100 border border-gray-200 p-4 rounded shadow-sm text-gray-600 mx-auto gap-1 items-center ">
+            <span className="inline-flex gap-1 font-bold items-center">
+            <MousePointerClick className="size-6" /><span className="hidden md:inline">Click</span><span className="md:hidden">Tap</span>
+            </span>{" "}
+            any image to view the original negative.
           </div>
         </div>
       </div>
