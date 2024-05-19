@@ -271,7 +271,7 @@ const TabButton: React.FC<TabButtonProps> = ({
     <button
       {...props}
       className={twMerge(
-        `w-full justify-between flex text-left items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3`,
+        `gtm-feature-button w-full justify-between flex text-left items-center text-lg p-5 rounded border transition duration-300 ease-in-out mb-3`,
         !active
           ? "bg-white shadow-md border-gray-200 hover:shadow-lg"
           : "bg-gray-200 border-transparent",

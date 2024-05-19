@@ -14,7 +14,7 @@ const inter = Inter({
 
 export const metadata = {
   title: "toneCarrier - film scanning system",
-  description: "Get perfect scans every time with out easy to use tools",
+  description: "Get perfect scans every time with our easy to use tools",
 };
 
 import Analytics from "@/components/gtmComponent";

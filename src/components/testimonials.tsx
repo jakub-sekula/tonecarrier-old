@@ -132,7 +132,7 @@ export default function Testimonials() {
               {testimonials.map((testimonial) => (
                 <CarouselItem key={testimonial.author}>
                   <div
-                    className="max-w-4xl mx-auto flex flex-col md:flex-row-reverse border border-gray-200 rounded bg-white shadow-sm overflow-hidden"
+                    className="gtm-review-card max-w-4xl mx-auto flex flex-col md:flex-row-reverse border border-gray-200 rounded bg-white shadow-sm overflow-hidden"
                    
                   >
                     {/* Testimonial */}
@@ -157,7 +157,7 @@ export default function Testimonials() {
                           Product:{" "}
                           <Link
                             href={testimonial.productLink}
-                            className="hover:underline"
+                            className="hover:underline gtm-product-link"
                           >
                             {testimonial.productName}
                           </Link>
@@ -179,7 +179,7 @@ export default function Testimonials() {
                     <div className="bg-red- w-full md:w-auto md:grow-0 flex gap-4 size-24 border-t md:h-auto md:max-h-80 md:aspect-square md:shrink-0 p-6 h-full items-center md:p-0">
                       <Link
                         href={testimonial.productLink}
-                        className="aspect-square overflow-hidden shrink-0 rounded shadow-sm md:shadow-none md:rounded-none size-16 md:size-fit"
+                        className="gtm-product-link aspect-square overflow-hidden shrink-0 rounded shadow-sm md:shadow-none md:rounded-none size-16 md:size-fit"
                       >
                         <Image
                           className="object-cover w-full h-full"
@@ -193,7 +193,7 @@ export default function Testimonials() {
                       </Link>
                       <Link
                         href={testimonial.productLink}
-                        className="flex flex-col md:hidden w-full"
+                        className="gtm-product-link flex flex-col md:hidden w-full"
                       >
                         <span className="text-xs text-gray-600">PRODUCT</span>
                         <span className="font-semibold text-lg">
@@ -205,8 +205,8 @@ export default function Testimonials() {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
+            <CarouselPrevious className="gtm-previous-review"/>
+            <CarouselNext className="gtm-next-review" />
           </Carousel>
 
         </div>

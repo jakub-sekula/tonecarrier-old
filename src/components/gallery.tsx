@@ -102,7 +102,8 @@ function PhotoComponent({ photo }: { photo: Photo }) {
       onClick={() => setInvert((prev) => !prev)}
       className={clsx(
         "group md:hover:shadow-xl transition-all duration-200",
-        " w-full shrink-0 md:h-full rounded overflow-hidden group relative  md:aspect-[3/2] border md:border-none"
+         "w-full shrink-0 md:h-full rounded overflow-hidden group relative  md:aspect-[3/2] border md:border-none",
+         "gtm-sample-photo"
       )}
     >
       <div className="md:group-hover:opacity-100 bg-black/20 border border-white/20 shadow-xl backdrop-blur-md z-50 ransition-all duration-200 absolute  top-4 left-4 opacity-0 text-white px-3 py-2 rounded flex flex-col gap-0 text-sm">
@@ -172,7 +173,7 @@ export default function Gallery() {
             <a
               href="https://mega.nz/file/6XoH3QBD#c8nWI30F2vgC28vI4fEsG7vpXjj8RMaz6NFHLLFYd6U"
               target="_blank"
-              className="w-full px-4 py-2 rounded border-gray-900 border hover:bg-gray-900/20 text-gray-900 flex justify-center items-center gap-2 mt-8"
+              className="gtm-sample-download w-full px-4 py-2 rounded border-gray-900 border hover:bg-gray-900/20 text-gray-900 flex justify-center items-center gap-2 mt-8"
             >
               <Download className="size-4" />
               Download ZIP (145 MB)
@@ -192,6 +193,7 @@ export default function Gallery() {
           plugins={[
             Autoplay({
               delay: 3500,
+              stopOnInteraction: false
             }),
           ]}
           opts={{
@@ -204,7 +206,7 @@ export default function Gallery() {
           <CarouselContent className="-ml-4">
             {initialPhotos.map((photo, index) => (
               <CarouselItem
-                className="md:basis-1/2 lg:basis-1/4 2xl:basis-1/5 pl-4 "
+                className="md:basis-1/2 lg:basis-1/3 2xl:basis-1/5 pl-4 "
                 key={index}
               >
                 <PhotoComponent photo={photo} />
