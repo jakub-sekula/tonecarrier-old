@@ -278,14 +278,16 @@ const TabButton: React.FC<TabButtonProps> = ({
         className
       )}
     >
-      <div>
-        <div className="text-sm md:text-base font-bold leading-snug tracking-tight mb-1">
+      <div className="gtm-feature-button">
+        <div className="gtm-feature-button text-sm md:text-base font-bold leading-snug tracking-tight mb-1">
           {title}
         </div>
-        <div className="text-sm text-gray-600">{description}</div>
+        <div className="gtm-feature-button text-sm text-gray-600">
+          {description}
+        </div>
       </div>
       {icon ? (
-        <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3">
+        <div className="gtm-feature-button flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3">
           {icon}
         </div>
       ) : null}
