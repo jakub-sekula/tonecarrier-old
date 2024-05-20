@@ -182,7 +182,7 @@ export default function Testimonials() {
                         className="gtm-product-link aspect-square overflow-hidden shrink-0 rounded shadow-sm md:shadow-none md:rounded-none size-16 md:size-fit"
                       >
                         <Image
-                          className="object-cover w-full h-full"
+                          className="object-cover w-full h-full gtm-product-link"
                           src={
                             testimonial?.reviewImage || testimonial.productImage
                           }
