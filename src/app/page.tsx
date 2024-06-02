@@ -28,11 +28,11 @@ export default function Home() {
     <>
       <main className="grow">
         <Hero />
-        {/* <FeaturesBlocks /> */}
-        <Gallery />
+        <FeaturesBlocks />
         <Features />
+        <Gallery />
         <Testimonials />
-        {/* <Faq /> */}
+        <Faq />
         {/* <Newsletter /> */}
       </main>
     </>

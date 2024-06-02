@@ -3,6 +3,7 @@ import VideoThumb from "@public/images/thumb.jpg";
 import ModalVideo from "@/components/modal-video";
 import EtsyLogo from "./icons/EtsyLogo";
 import { useEffect, useRef } from "react";
+import { Star } from "lucide-react";
 
 export default function Hero() {
   const ref = useRef<HTMLVideoElement | null>(null);
@@ -33,43 +34,58 @@ export default function Hero() {
           {/* Section header */}
           <div className="text-center pb-12 md:pb-16">
             <h1
-              className="text-5xl md:text-[5rem] font-extrabold leading-tighter tracking-tighter mb-4"
+              className="text-[1.875rem] md:text-[5rem] font-extrabold leading-[1em] tracking-tighter mb-4"
               data-aos="zoom-y-out"
             >
-              The best way to preserve
+              The easy way to digitize
               <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-500 to-red-400">
+              <span className="bg-clip-text px-2 text-transparent bg-gradient-to-r from-amber-500 to-red-400">
                 your film memories
               </span>
             </h1>
             <div className="max-w-3xl mx-auto">
               <p
-                className="text-xl text-gray-200 mb-8"
+                className="text-sm md:text-xl text-gray-200 mb-8"
                 data-aos="zoom-y-out"
                 data-aos-delay="150"
               >
                 The toneCarrier is a complete system for digitizing negatives
-                and slides.
-                <br />
+                and slides. <br className="hidden md:block" />
                 All you need is a camera, tripod and a macro lens.
               </p>
+              <div className="text-sm md:text-base flex flex-col items-center my-12 gap-2">
+                <div className="flex gap-2">
+                  {Array(5)
+                    .fill(".")
+                    .map((_, index) => (
+                      <Star
+                        key={"star" + index}
+                        className="fill-amber-500 stroke-none"
+                      />
+                    ))}
+                </div>
+                <span>
+                  5 star average rating on{" "}
+                  <EtsyLogo className="inline fill-white w-10" />
+                </span>
+              </div>
               <div
-                className="mx-auto sm:max-w-none sm:flex sm:justify-center"
+                className="mx-auto sm:max-w-none sm:flex sm:justify-center flex flex-col md:flex-row gap-4"
                 data-aos="zoom-y-out"
                 data-aos-delay="300"
               >
                 <a
-                  className="btn text-white bg-orange-500 hover:bg-orange-600 w-full sm:w-auto mb-4 whitespace-nowrap sm:mb-0 flex items-center justify-center gap-1"
-                  href="https://theprintedphotolab.etsy.com"
+                  className="btn text-white bg-orange-500 hover:bg-orange-600 w-full sm:w-auto whitespace-nowrap sm:mb-0 flex items-center justify-center gap-1"
+                  href="https://www.etsy.com/uk/listing/1592266480/tonecarrier-35-mm-film-holder-for-dslr"
                 >
-                  Buy on <EtsyLogo className="fill-white h-6 pt-1" />
+                  For 35 mm film - £109.99
                 </a>
-                {/* <a
-                  className="btn text-white bg-gray-900 hover:bg-gray-800 w-full sm:w-auto sm:ml-4"
-                  href="#0"
+                <a
+                  className="btn text-white bg-orange-500 hover:bg-orange-600 w-full sm:w-auto  whitespace-nowrap sm:mb-0 flex items-center justify-center gap-1"
+                  href="https://www.etsy.com/uk/listing/1606478007/tonecarrier-120-film-holder-for-dslr"
                 >
-                  Learn more
-                </a> */}
+                  For 120 film - £119.99
+                </a>
               </div>
             </div>
           </div>

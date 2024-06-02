@@ -28,7 +28,7 @@ export default function Features() {
   }, []);
 
   return (
-    <section className="relative pb-12 md:pb-20" id="features">
+    <section className="relative" id="features">
       {/* Section background (needs .relative class on parent and next sibling elements) */}
       <div
         className="absolute inset-0 bg-gray-100 pointer-events-none mb-16"

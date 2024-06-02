@@ -37,8 +37,11 @@ export default function Header() {
           </div>
 
           {/* Desktop navigation */}
-          <nav className="hidden md:flex md:grow justify-end">
-            {/* Desktop sign in links */}
+          <nav className={clsx("hidden md:flex md:grow justify-end items-center gap-8", top ? "text-white" : "text-zinc-900")}>
+            <a className="hover:underline" href="#features">Features</a>
+            <a className="hover:underline" href="#samples">Sample scans</a>
+            <a className="hover:underline" href="#reviews">Reviews</a>
+            <a className="hover:underline" href="#faq">FAQ</a>
             <a
               className="btn-sm text-white bg-orange-500 hover:bg-orange-600 w-fit mb-4 whitespace-nowrap sm:mb-0 flex items-center justify-center gap-1 justify-self-end"
               href="https://theprintedphotolab.etsy.com"

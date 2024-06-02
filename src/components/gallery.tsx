@@ -156,7 +156,7 @@ export default function Gallery() {
     <section className="relative pb-12" id="samples">
       {/* <div className="bg-gray-900 absolute left-0 right-0 top-0 h-[30rem]" /> */}
       <div
-        className="relative max-w-6xl mx-auto px-4 sm:px-6  pt-24"
+        className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-12 md:pt-24"
         data-aos="zoom-y-out"
       >
         {/* Section header */}
