@@ -19,6 +19,7 @@ export const metadata = {
 
 import Analytics from "@/components/gtmComponent";
 import { Suspense } from "react";
+import Footer from "@/components/ui/footer";
 
 // To be placed within the <body> tag of your layout.tsx
 
@@ -36,6 +37,7 @@ export default function RootLayout({
           <Header />
           {children}
           {/* <Banner /> */}
+          <Footer />
         </div>
 
         {/* <Suspense>

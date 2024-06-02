@@ -6,6 +6,7 @@ import MobileMenu from "./mobile-menu";
 import ToneCarrierLogo from "../icons/ToneCarrierLogo";
 import EtsyLogo from "../icons/EtsyLogo";
 import clsx from "clsx";
+import Link from "next/link";
 
 export default function Header() {
   const [top, setTop] = useState<boolean>(true);
@@ -30,11 +31,11 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-5 sm:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Site branding */}
-          <div className="shrink-0 mr-4 h-11">
+          <Link href="/" className="shrink-0 mr-4 h-11">
             <ToneCarrierLogo
               className={clsx(top ? "fill-white" : "fill-black")}
             />
-          </div>
+          </Link>
 
           {/* Desktop navigation */}
           <nav className={clsx("hidden md:flex md:grow justify-end items-center gap-8", top ? "text-white" : "text-zinc-900")}>
