@@ -13,8 +13,8 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "toneCarrier - film scanning system",
-  description: "Get perfect scans every time with our easy to use tools",
+  title: "toneCarrier - 35 mm and 120 film scanning system",
+  description: "Scanning tools engineered for quality. Get perfect DSLR scans of your negatives in the most popular formats. toneCarrier keeps your film safe and flat, so you can focus on your photography.",
 };
 
 import Analytics from "@/components/gtmComponent";
