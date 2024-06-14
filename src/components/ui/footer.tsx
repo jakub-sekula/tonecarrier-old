@@ -11,7 +11,7 @@ export default function Footer() {
         {/* Bottom area */}
         <div className="md:flex md:items-center md:justify-between py-4 md:py-8 border-t border-gray-200">
 
-          {/* Social as */}
+          {/* Social as
           <ul className="flex mb-4 md:order-1 md:ml-4 md:mb-0">
             <li>
               <a href="#0" className="flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out" aria-label="Twitter">
@@ -34,7 +34,7 @@ export default function Footer() {
                 </svg>
               </a>
             </li>
-          </ul>
+          </ul> */}
 
           {/* Copyrights note */}
           <div className="text-sm text-gray-600 mr-4">&copy; 2024 tonecarrier.com. All rights reserved. <Link href="privacy-policy" className='hover:underline'>Privacy policy.</Link></div>

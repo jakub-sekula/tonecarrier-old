@@ -26,9 +26,9 @@ const faq = [
 export default function Faq() {
   return (
     <section className="relative" id="faq">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:mb-20 md:py-20">
+      <div className="max-w-6xl mx-auto px-6 py-12 md:mb-20 md:py-20">
         {/* Section header */}
-        <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
+        <div className="max-w-3xl mx-auto text-center pb-8 md:pb-16">
           <h2 className="h2 mb-4">Frequently asked questions</h2>
         </div>
         <Accordion
