@@ -34,7 +34,11 @@ export default function ProductCard({
         />
       </div>
       <h4 className="h4">{product.name}</h4>
-      <span className="mb-4">£ {product.price}</span>
+      <span className="mb-4 inline-flex items-baseline gap-1">
+        £ {product.price}{" "}
+        <span className="text-xs text-neutral-500">+ local taxes</span>
+      </span>
+
       {product.features?.length ? (
         <ul className="mb-6 flex flex-col gap-2">
           {product.features.map((feature) => (
@@ -49,7 +53,7 @@ export default function ProductCard({
         </ul>
       ) : null}
 
-      <BuyOnEtsyButton href={product.link} className="w-full md:w-auto"/>
+      <BuyOnEtsyButton href={product.link} className="w-full md:w-auto" />
     </article>
   );
 }
