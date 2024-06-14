@@ -59,7 +59,7 @@ export default function Hero() {
                 data-aos="zoom-y-out"
                 data-aos-delay="300"
               >
-                <BuyOnEtsyButton href="https://theprintedphotolab.etsy.com" />
+                <BuyOnEtsyButton href="https://theprintedphotolab.etsy.com" className="w-full"/>
                 <a
                   className="btn text-white  hover:bg-white/20 border border-white w-full sm:w-auto  whitespace-nowrap sm:mb-0 flex items-center justify-center gap-1"
                   href="#feature-blocks"

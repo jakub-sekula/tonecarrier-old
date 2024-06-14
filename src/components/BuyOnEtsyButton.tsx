@@ -12,7 +12,7 @@ export default function BuyOnEtsyButton({
   return (
     <a
       className={twMerge(
-        "btn-sm text-white bg-orange-500 hover:bg-orange-600 w-fit mb-4 whitespace-nowrap sm:mb-0 flex items-center justify-center gap-1 justify-self-end border border-transparent",
+        "btn-sm text-white bg-orange-500 hover:bg-orange-600 w-fit whitespace-nowrap sm:mb-0 flex items-center justify-center gap-1 justify-self-end border border-transparent",
         className
       )}
       href={href}

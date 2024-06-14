@@ -119,7 +119,7 @@ export default function Testimonials() {
               className="text-lg md:text-xl text-gray-600"
               data-aos="zoom-y-out"
             >
-              Some reviews from verified buyers in our Etsy store.
+              Reviews from verified buyers in our Etsy store.
             </p>
             {/* <div className="text-sm md:text-base flex flex-col mt-12 items-center gap-2">
                 <div className="flex gap-2">

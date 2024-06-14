@@ -49,7 +49,7 @@ export default function ProductCard({
         </ul>
       ) : null}
 
-      <BuyOnEtsyButton href={product.link} />
+      <BuyOnEtsyButton href={product.link} className="w-full md:w-auto"/>
     </article>
   );
 }
