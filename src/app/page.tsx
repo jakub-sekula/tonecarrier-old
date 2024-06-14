@@ -101,7 +101,7 @@ const features: Feature[] = [
     description: (
       <>
         <p className="leading-relaxed">
-          Up for a DIY project? 3D printing files are for all toneCarrier
+          Up for a DIY project? 3D printing files for all toneCarrier
           holders and accessories are available for sale.
         </p>
         <p className="leading-relaxed">
