@@ -7,7 +7,7 @@ import Image from "next/image";
 const products = [
   {
     name: "toneCarrier 35 mm",
-    image: "images/products/35.jpg",
+    images: ["images/products/35.jpg", "images/products/120.jpg"],
     price: 109.99,
     link: "https://www.etsy.com/uk/listing/1592266480/tonecarrier-35-mm-film-holder-for-dslr",
     features: [
@@ -18,7 +18,7 @@ const products = [
   },
   {
     name: "toneCarrier 120",
-    image: "images/products/120.jpg",
+    images: "images/products/120.jpg",
     price: 119.99,
     link: "https://www.etsy.com/uk/listing/1606478007/tonecarrier-120-film-holder-for-dslr",
     features: [

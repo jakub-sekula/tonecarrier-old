@@ -15,6 +15,39 @@ import EtsyLogo from "./icons/EtsyLogo";
 
 const testimonials = [
   {
+    date: "Jun 16, 2024",
+    author: "Hanool P.",
+    stars: 5,
+    content:
+      "It's a very well made and easy to use. I would recommend this to anyone who would like to DSLR scan at home but frustrated with the current available options.",
+    productImage: "/images/reviews/hanoolp.jpeg",
+    productName: "toneCarrier 120",
+    productLink:
+      "https://www.etsy.com/uk/listing/1606478007/tonecarrier-120-film-holder-for-dslr",
+  },
+  {
+    date: "Jun 18, 2024",
+    author: "Mirco R.",
+    stars: 5,
+    content:
+      "Had some questions before buying and the communication with the seller was perfect! The shipping was fast and the quality of the carrier is really good! I don’t have any others to compare this one to but I would still recommend this one.",
+    productImage: "/images/reviews/mircor.jpeg",
+    productName: "toneCarrier 120",
+    productLink:
+      "https://www.etsy.com/uk/listing/1606478007/tonecarrier-120-film-holder-for-dslr",
+  },
+  {
+    date: "Jun 19, 2024",
+    author: "John B.",
+    stars: 5,
+    content:
+      "This is the film holder you are looking for. Substantial build quality, film rollers are smooth and firm. I completely underestimated how much time you can save by simply rolling your film through. Great Customer Service as well.",
+    productImage: "/images/reviews/johnb.jpeg",
+    productName: "toneCarrier 120",
+    productLink:
+      "https://www.etsy.com/uk/listing/1606478007/tonecarrier-120-film-holder-for-dslr",
+  },
+  {
     date: "Feb 15, 2024",
     author: "Ryan T.",
     stars: 5,
@@ -121,7 +154,7 @@ export default function Testimonials() {
             >
               Reviews from verified buyers in our Etsy store.
             </p>
-            {/* <div className="text-sm md:text-base flex flex-col mt-12 items-center gap-2">
+            <div className="text-sm md:text-base flex flex-col mt-12 items-center gap-2 border p-6 w-fit mx-auto rounded ">
                 <div className="flex gap-2">
                   {Array(5)
                     .fill(".")
@@ -133,10 +166,10 @@ export default function Testimonials() {
                     ))}
                 </div>
                 <span>
-                  5 star average rating on{" "}
+                  5.0 star average rating on{" "}
                   <EtsyLogo className="inline w-10" />
                 </span>
-              </div> */}
+              </div>
           </div>
           
           <Carousel
