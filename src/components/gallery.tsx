@@ -30,70 +30,79 @@ type Photo = {
 
 const initialPhotos: Photo[] = [
   {
-    name: "Photo 1",
-    image: "/images/samples/1.jpg",
-    original: "/images/samples/1a.jpg",
+    name: "Photo 9",
+    image: "/images/samples/9.jpg",
+    original: "/images/samples/9a.jpg",
+    camera: "Fujifilm X-T5",
+    film: "Kodak Colorplus 200",
+    light: "Cinestill CS-Lite",
+  },
+  {
+    name: "Photo 10",
+    image: "/images/samples/10.jpg",
+    original: "/images/samples/10a.jpg",
+    camera: "Fujifilm X-T5",
+    film: "Kodak Colorplus 200",
+    light: "Cinestill CS-Lite",
+  },
+  {
+    name: "Photo 11",
+    image: "/images/samples/11.jpg",
+    original: "/images/samples/11a.jpg",
+    camera: "Fujifilm X-T5",
+    film: "ORWO NC500",
+    light: "Cinestill CS-Lite",
+  },
+  {
+    name: "Photo 12",
+    image: "/images/samples/12.jpg",
+    original: "/images/samples/12a.jpg",
     camera: "Canon 70D",
-    // film: "Kodak Gold 200",
+    film: "Kodak Gold 200",
     light: "iPad Air 2",
   },
   {
-    name: "Photo 2",
-    image: "/images/samples/2.jpg",
-    original: "/images/samples/2a.jpg",
+    name: "Photo 13",
+    image: "/images/samples/13.jpg",
+    original: "/images/samples/13a.jpg",
     camera: "Canon 70D",
-    // film: "Kodak Gold 200",
+    film: "Kodak Gold 200",
     light: "iPad Air 2",
   },
   {
-    name: "Photo 3",
-    image: "/images/samples/3.jpg",
-    original: "/images/samples/3a.jpg",
+    name: "Photo 14",
+    image: "/images/samples/14.jpg",
+    original: "/images/samples/14a.jpg",
     camera: "Canon 70D",
-    // film: "Kodak Gold 200",
+    film: "Kodak Gold 200",
     light: "iPad Air 2",
   },
   {
-    name: "Photo 4",
-    image: "/images/samples/4.jpg",
-    original: "/images/samples/4a.jpg",
+    name: "Photo 15",
+    image: "/images/samples/15.jpg",
+    original: "/images/samples/15a.jpg",
     camera: "Canon 70D",
-    // film: "Kodak Gold 200",
+    film: "Kodak Gold 200",
     light: "iPad Air 2",
   },
   {
-    name: "Photo 5",
-    image: "/images/samples/5.jpg",
-    original: "/images/samples/5a.jpg",
+    name: "Photo 16",
+    image: "/images/samples/16.jpg",
+    original: "/images/samples/16a.jpg",
     camera: "Canon 70D",
-    // film: "Kodak Gold 200",
+    film: "Kodak Gold 200",
     light: "iPad Air 2",
   },
   {
-    name: "Photo 5",
-    image: "/images/samples/6.jpg",
-    original: "/images/samples/6a.jpg",
+    name: "Photo 17",
+    image: "/images/samples/17.jpg",
+    original: "/images/samples/17a.jpg",
     camera: "Canon 70D",
-    // film: "Kodak Gold 200",
-    light: "iPad Air 2",
-  },
-  {
-    name: "Photo 5",
-    image: "/images/samples/7.jpg",
-    original: "/images/samples/7a.jpg",
-    camera: "Canon 70D",
-    // film: "Kodak Gold 200",
-    light: "iPad Air 2",
-  },
-  {
-    name: "Photo 5",
-    image: "/images/samples/8.jpg",
-    original: "/images/samples/8a.jpg",
-    camera: "Canon 70D",
-    // film: "Kodak Gold 200",
+    film: "Kodak Gold 200",
     light: "iPad Air 2",
   },
 ];
+
 
 function PhotoComponent({ photo }: { photo: Photo }) {
   const [invert, setInvert] = useState(false);
@@ -109,18 +118,18 @@ function PhotoComponent({ photo }: { photo: Photo }) {
       <div className="md:group-hover:opacity-100 bg-black/20 border border-white/20 shadow-xl backdrop-blur-md z-50 ransition-all duration-200 absolute  top-4 left-4 opacity-0 text-white px-3 py-2 rounded flex flex-col gap-0 text-sm">
         <div className="flex items-center gap-2">
           <Camera className="size-4" />
-          <span>{photo.camera}</span>
+          <span>Camera: {photo.camera}</span>
         </div>
         {photo.film ? (
           <div className="flex items-center gap-2">
             <Film className="size-4" />
-            <span>{photo.film}</span>
+            <span>Film: {photo.film}</span>
           </div>
         ) : null}
 
         <div className="flex items-center gap-2">
           <SunMedium className="size-4" />
-          <span>{photo.light}</span>
+          <span>Light: {photo.light}</span>
         </div>
       </div>
       <Image
@@ -133,18 +142,18 @@ function PhotoComponent({ photo }: { photo: Photo }) {
       <div className="p-6 flex flex-col gap-2 md:hidden">
         <div className="flex items-center gap-2">
           <Camera className="size-5" />
-          <span>{photo.camera}</span>
+          <span>Camera: {photo.camera}</span>
         </div>
         {photo.film ? (
           <div className="flex items-center gap-2">
             <Film className="size-5" />
-            <span>{photo.film}</span>
+            <span>Film: {photo.film}</span>
           </div>
         ) : null}
 
         <div className="flex items-center gap-2">
           <SunMedium className="size-5" />
-          <span>{photo.light}</span>
+          <span>Light: {photo.light}</span>
         </div>
       </div>
     </div>
