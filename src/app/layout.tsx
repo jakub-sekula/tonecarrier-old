@@ -31,18 +31,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} font-inter antialiased bg-white text-gray-900 tracking-tight`}
+        className={`${inter.variable} font-inter antialiased text-center bg-black text-white flex flex-col items-center justify-center gap-6 fixed inset-0 tracking-tight`}
       >
-        <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip">
-          <Header />
+        <img src="/tone-logo-white.png" className="w-48"/>
+          The toneCarrier has a new home!
+          <br/>Redirecting now...
+        {/* <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip"> */}
+          {/* <Header /> */}
           {children}
           {/* <Banner /> */}
-          <Footer />
-        </div>
-
-        {/* <Suspense>
-          <Analytics />
-        </Suspense> */}
+          {/* <Footer /> */}
+        {/* </div> */}
       </body>
       <GoogleAnalytics gaId="G-MBMWQ5ED7P" />
       <GoogleTagManager gtmId="GTM-WN6VB42T" />
