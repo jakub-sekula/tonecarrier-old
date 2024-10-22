@@ -35,7 +35,7 @@ export default function RootLayout({
       >
         <img src="/tone-logo-white.png" className="w-48"/>
           The toneCarrier has a new home!
-          <br/>Redirecting now...
+          <br/>Redirecting now
         {/* <div className="flex flex-col min-h-screen overflow-hidden supports-[overflow:clip]:overflow-clip"> */}
           {/* <Header /> */}
           {children}
